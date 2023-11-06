@@ -1,4 +1,18 @@
 final: prev: {
+  rustywind = final.rustPlatform.buildRustPackage rec {
+    pname = "rustywind";
+    version = "v0.16.0";
+
+    src = final.fetchFromGitHub {
+      owner = "avencera";
+      repo = pname;
+      rev = version;
+      sha256 = "xDpRS8WrFu5uPtbXJGXrxElJinxl1lkpYZ1tGrNrBHA=";
+    };
+
+    cargoSha256 = "r9ukb4ZyXbMWFNlrikQE/ELSvDL164W2kwjyxZYbwZA=";
+  };
+
   vimPlugins =
     prev.vimPlugins
     // {
@@ -13,5 +27,17 @@ final: prev: {
         };
         meta.homepage = "https://github.com/echasnovski/mini.indentscope";
       };
+
+      # rose-pine-nvim = final.vimUtils.buildVimPluginFrom2Nix {
+      #   pname = "rose-pine";
+      #   version = "v1.2.0";
+      #   src = final.fetchFromGitHub {
+      #     owner = "rose-pine";
+      #     repo = "neovim";
+      #     rev = "76cae45b4e6716ee93afc78bd3860134935ea9d7";
+      #     sha256 = "E8MnCvgppG0ViBa+hZcrR9S2Xf8Q1k1Vy88/XLoHtk8=";
+      #   };
+      #   meta.homepage = "https://github.com/echasnovski/mini.indentscope";
+      # };
     };
 }
