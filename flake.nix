@@ -38,6 +38,7 @@
           nodePackages.svelte-language-server
           nodePackages."@astrojs/language-server"
           nodePackages."@tailwindcss/language-server"
+          nodePackages."@volar/vue-language-server"
           nodePackages.intelephense
 
           # Php
