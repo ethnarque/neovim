@@ -1,4 +1,5 @@
 return {
+    gopls = {},
     nixd = {},
     lua_ls = {
         settings = {
