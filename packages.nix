@@ -16,7 +16,7 @@ final: prev: {
   vimPlugins =
     prev.vimPlugins
     // {
-      mini-indentscope-nvim = final.vimUtils.buildVimPluginFrom2Nix {
+      mini-indentscope-nvim = final.vimUtils.buildVimPlugin {
         pname = "mini.indentscope";
         version = "0.7.0";
         src = final.fetchFromGitHub {

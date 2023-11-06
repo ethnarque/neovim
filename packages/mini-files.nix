@@ -2,7 +2,7 @@ final: prev: {
   vimPlugins =
     prev.vimPlugins
     // {
-      mini-files-nvim = final.vimUtils.buildVimPluginFrom2Nix {
+      mini-files-nvim = final.vimUtils.buildVimPlugin {
         pname = "mini.files";
         version = "0.10.0";
         src = final.fetchFromGitHub {
