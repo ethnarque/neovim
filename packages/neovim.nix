@@ -1,6 +1,6 @@
 { pkgs }:
 let
-  customRC = import ../customrc.nix { inherit pkgs; };
+  customRC = import ../custom-rc.nix { inherit pkgs; };
   dependencies = import ../dependencies.nix { inherit pkgs; };
 in
 pkgs.wrapNeovim pkgs.neovim-unwrapped {
@@ -27,17 +27,17 @@ pkgs.wrapNeovim pkgs.neovim-unwrapped {
       fidget-nvim
 
       # Autocompletion
-      nvim-cmp # generic autocompleter
-      cmp-nvim-lsp # use lsp as source for completions
-      cmp-nvim-lua # makes vim config editing better with completions
-      cmp-buffer # any text in open buffers
-      cmp-path # complete paths
-      cmp-cmdline # completing in :commands
-      cmp-emoji # complete :emojis:
-      cmp-nvim-lsp-signature-help # help complete function call by showing args
-      cmp-npm # complete node packages in package.json
-      luasnip # snippets driver
-      cmp_luasnip # snippets completion
+      nvim-cmp
+      cmp-nvim-lsp
+      cmp-nvim-lua
+      cmp-buffer
+      cmp-path
+      cmp-cmdline
+      cmp-emoji
+      cmp-nvim-lsp-signature-help
+      cmp-npm
+      luasnip
+      cmp_luasnip
 
       # Misc
       vim-sleuth
