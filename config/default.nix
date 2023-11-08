@@ -1,8 +1,8 @@
 { pkgs ? import <nixpkgs> { } }:
 
 let
-  secretaire-nvim = pkgs.stdenv.mkDerivation {
-    name = "secretaire-nvim";
+  core-nvim = pkgs.stdenv.mkDerivation {
+    name = "core-nvim";
     src = ./modules;
     installPhase = ''
       mkdir -p $out
@@ -10,8 +10,8 @@ let
     '';
   };
 
-  secretaire-pkg-nvim = pkgs.vimUtils.buildVimPlugin {
-    pname = "secretaire-pkg.nvim";
+  core-pkg-nvim = pkgs.vimUtils.buildVimPlugin {
+    pname = "core-pkg.nvim";
     version = "0.7.0";
     src = ./modules { };
     installPhase = ''
@@ -21,8 +21,7 @@ let
   };
 in
 ''
-  lua vim.opt.runtimepath:append("${secretaire-nvim}")
-  lua require "secretaire"
+  lua vim.opt.runtimepath:append("${core-nvim}")
   lua require "core"
 
   luafile ~/.config/nvim/init.lua

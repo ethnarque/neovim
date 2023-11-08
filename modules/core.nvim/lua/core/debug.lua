@@ -3,7 +3,7 @@ vim.cmd("packadd nvim-dap-ui")
 
 local dap = require "dap"
 local dapui = require "dapui"
-local icons = require("secretaire.icons")
+local icons = require("core.icons")
 
 
 vim.keymap.set('n', '<F5>', dap.continue, { desc = 'Debug: Start/Continue' })

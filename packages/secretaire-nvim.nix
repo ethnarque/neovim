@@ -1,8 +1,8 @@
 final: prev: {
-  secretaire-nvim = final.vimUtils.buildVimPlugin {
-    pname = "secretaire-nvim";
+  core-nvim = final.vimUtils.buildVimPlugin {
+    pname = "core-nvim";
     version = "0.1.0";
-    src = ../modules/secretaire.nvim;
+    src = ../modules/core.nvim;
     installPhase = ''
       mkdir -p $out
       cd -r ./* $out/

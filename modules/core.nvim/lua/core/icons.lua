@@ -1,4 +1,4 @@
----@class SecretaireIcon
+---@class CoreIcon
 local M = {
     ActiveLSP = "",
     ActiveTS = "",

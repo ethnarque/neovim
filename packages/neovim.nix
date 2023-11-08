@@ -14,9 +14,6 @@ pkgs.wrapNeovim pkgs.neovim-unwrapped {
     inherit customRC;
     packages.core.start = with pkgs.vimPlugins;[
       plenary-nvim
-      # Greeter
-      alpha-nvim
-      persistence-nvim
 
       # Fuzzy finder
       telescope-nvim
@@ -42,10 +39,11 @@ pkgs.wrapNeovim pkgs.neovim-unwrapped {
       # Misc
       vim-sleuth
       lspkind-nvim
-      nvim-web-devicons
       lualine-nvim
 
-      pkgs.secretaire-pkg-nvim
+      pkgs.core-nvim
+      pkgs.core-plugins-nvim
+
       mini-files-nvim
       mini-pairs-nvim
 
@@ -58,12 +56,16 @@ pkgs.wrapNeovim pkgs.neovim-unwrapped {
       which-key-nvim
       toggleterm-nvim
 
-
       nvim-treesitter.withAllGrammars # better code coloring
       playground
       nvim-treesitter-textobjects
       nvim-treesitter-context
       nvim-treesitter-parsers.comment
+
+      nvim-web-devicons
+
+      dashboard-nvim
+      persistence-nvim
     ];
   };
 }

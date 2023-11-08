@@ -1,5 +1,5 @@
-local util = require("secretaire.utils")
-local group = vim.api.nvim_create_augroup("secretaire-config", {})
+local util = require("core.util")
+local group = vim.api.nvim_create_augroup("core-config", {})
 
 --- mini.pairs
 --- Minimal and fast autopairs

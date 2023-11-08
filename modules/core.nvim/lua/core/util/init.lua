@@ -6,7 +6,7 @@ function M.lazy_load(pkg_name)
 end
 
 function M.augroup(name)
-    return vim.api.nvim_create_augroup("secretaire-" .. name, { clear = true })
+    return vim.api.nvim_create_augroup("core-" .. name, { clear = true })
 end
 
 return M

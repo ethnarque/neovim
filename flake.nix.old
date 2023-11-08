@@ -1,0 +1,72 @@
+{
+  description = "dotpml's Neovim flake";
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+    neovim.url = "github:neovim/neovim/stable?dir=contrib";
+    neovim.inputs.nixpkgs.follows = "nixpkgs";
+    neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
+    neovim-nightly.inputs.nixpkgs.follows = "nixpkgs";
+  };
+
+  outputs = inputs@{ flake-parts, nixpkgs, neovim, neovim-nightly, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [
+        "x86_64-linux"
+        "aarch64-darwin"
+      ];
+
+      perSystem = { config, pkgs, system, ... }:
+        let
+          pkgs = import nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+            overlays = [
+              #neovimOverlay
+              neovim-nightly.overlay
+              coreOverlay
+              corePkgOverlay
+              #corePluginsOverlay
+              (import ./packages/mini-files.nix)
+              (import ./packages/mini-pairs.nix)
+            ];
+          };
+
+          neovimOverlay = prev: final: {
+            neovim = neovim.packages.${system}.neovim;
+          };
+
+          corePkgOverlay = prev: final: {
+            core-pkg-nvim = import ./modules/core.nvim { inherit pkgs; };
+          };
+
+          corePluginsOverlay = prev: final: {
+            core-plugins-nvim = import ./modules/plugins.nvim { inherit pkgs; };
+          };
+
+          coreOverlay = prev: final: {
+            core-beta = import ./packages/neovim.nix {
+              pkgs = pkgs;
+            };
+          };
+
+        in
+        {
+          _module.args.pkgs = pkgs;
+          formatter = pkgs.nixpkgs-fmt;
+
+          devShells.default = config.devShells.dev;
+          devShells.dev = pkgs.mkShell {
+            buildInputs = [ pkgs.core-beta pkgs.core-pkg-nvim ];
+          };
+
+          packages.default = pkgs.core-beta;
+
+          apps.default = config.apps.stable;
+          apps.stable = {
+            type = "app";
+            program = "${pkgs.core-beta}/bin/nvim";
+          };
+        };
+    };
+}

@@ -1,6 +1,6 @@
 local format_is_enabled = true
 
-vim.api.nvim_create_user_command("SecretaireFormatToggle", function()
+vim.api.nvim_create_user_command("CoreFormatToggle", function()
     format_is_enabled = not format_is_enabled
     print("Setting autoformatting to: " .. tostring(format_is_enabled))
 end, {})
@@ -9,7 +9,7 @@ end, {})
 local _augroups = {}
 local get_augroup = function(client)
     if not _augroups[client.id] then
-        local group_name = 'secretaire-lsp-format-' .. client.name
+        local group_name = 'core-lsp-format-' .. client.name
         local id = vim.api.nvim_create_augroup(group_name, { clear = true })
         _augroups[client.id] = id
     end
@@ -18,7 +18,7 @@ local get_augroup = function(client)
 end
 
 vim.api.nvim_create_autocmd('LspAttach', {
-    group = require("secretaire.augroups").lsp_attach_format,
+    group = require("core.augroups").lsp_attach_format,
     -- This is where we attach the autoformatting for reasonable clients
     callback = function(args)
         local client_id = args.data.client_id

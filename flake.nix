@@ -1,64 +1,56 @@
 {
-  description = "dotpml's Neovim flake";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    neovim.url = "github:neovim/neovim/stable?dir=contrib";
-    neovim.inputs.nixpkgs.follows = "nixpkgs";
+    neovim = {
+      url = "github:neovim/neovim/stable?dir=contrib";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    neovim-nightly = {
+      url = "github:nix-community/neovim-nightly-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ flake-parts, nixpkgs, neovim, ... }:
-    flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [
-        "x86_64-linux"
-        "aarch64-darwin"
-      ];
+  outputs = inputs @ { self, nixpkgs, ... }:
+    let
+      forAllSystems = function:
+        nixpkgs.lib.genAttrs [
+          "x86_64-linux"
+          "aarch64-darwin"
+        ]
+          (system:
+            function (import nixpkgs {
+              inherit system;
+              config.allowUnfree = true;
+              overlays = [
+                inputs.neovim-nightly.overlay
+                (import ./overlays.nix)
+                (import ./modules/core.nvim)
+                (import ./modules/plugins.nvim)
+              ];
+            }));
+    in
+    {
+      packages = forAllSystems (pkgs: {
+        default = pkgs.neovim;
+      });
 
-      perSystem = { config, pkgs, system, ... }:
-        let
-          pkgs = import nixpkgs {
-            inherit system;
-            config.allowUnfree = true;
-            overlays = [
-              neovimOverlay
-              secretaireOverlay
-              secretairePkgOverlay
-              (import ./packages/mini-files.nix)
-              (import ./packages/mini-pairs.nix)
-            ];
-          };
-
-          neovimOverlay = prev: final: {
-            neovim = neovim.packages.${system}.neovim;
-          };
-
-          secretairePkgOverlay = prev: final: {
-            secretaire-pkg-nvim = import ./modules/secretaire.nvim { inherit pkgs; };
-          };
-
-          secretaireOverlay = prev: final: {
-            secretaire-beta = import ./packages/neovim.nix {
-              pkgs = pkgs;
-            };
-          };
-
-        in
-        {
-          _module.args.pkgs = pkgs;
-          formatter = pkgs.nixpkgs-fmt;
-
-          devShells.default = config.devShells.dev;
-          devShells.dev = pkgs.mkShell {
-            buildInputs = [ pkgs.secretaire-beta pkgs.secretaire-pkg-nvim ];
-          };
-
-          packages.default = pkgs.secretaire-beta;
-
-          apps.default = config.apps.stable;
-          apps.stable = {
-            type = "app";
-            program = "${pkgs.secretaire-beta}/bin/nvim";
-          };
+      apps = forAllSystems (pkgs: {
+        default = {
+          type = "app";
+          program = "${pkgs.neovim}/bin/nvim";
         };
+      });
+
+      devShells = forAllSystems (pkgs: {
+        default = pkgs.mkShell {
+          buildInputs = [
+            pkgs.neovim
+            pkgs.core-nvim
+            pkgs.core-plugins-nvim
+          ];
+        };
+      });
     };
 }

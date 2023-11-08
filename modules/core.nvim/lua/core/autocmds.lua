@@ -1,5 +1,5 @@
-local augroup = require "secretaire.utils".augroup
-local lazyload = require "secretaire.utils".lazy_load
+local augroup = require "core.util".augroup
+local lazyload = require "core.util".lazy_load
 
 --- Most autocmds are pulled from
 --- https://github.dev/LazyVim/LazyVim/blob/main/lua/lazyvim/plugins/extras/coding/codeium.lua

@@ -1,6 +1,6 @@
 { pkgs ? import <nixpkgs> { } }:
 pkgs.vimUtils.buildVimPlugin {
-  pname = "secretaire-nvim";
+  pname = "core-nvim";
   version = "0.1.0";
   src = ./.;
   installPhase = ''
