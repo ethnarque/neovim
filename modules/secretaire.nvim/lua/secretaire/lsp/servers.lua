@@ -1,4 +1,5 @@
 return {
+    html = {},
     gopls = {},
     nixd = {},
     lua_ls = {
