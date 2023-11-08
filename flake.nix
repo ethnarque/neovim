@@ -1,6 +1,5 @@
 {
   description = "dotpml's Neovim flake";
-
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
@@ -25,6 +24,7 @@
               secretaireOverlay
               secretairePkgOverlay
               (import ./packages/mini-files.nix)
+              (import ./packages/mini-pairs.nix)
             ];
           };
 

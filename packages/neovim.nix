@@ -47,6 +47,7 @@ pkgs.wrapNeovim pkgs.neovim-unwrapped {
 
       pkgs.secretaire-pkg-nvim
       mini-files-nvim
+      mini-pairs-nvim
 
     ];
     packages.core.opt = with pkgs.vimPlugins; [
