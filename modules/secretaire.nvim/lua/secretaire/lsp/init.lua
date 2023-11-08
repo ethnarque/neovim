@@ -2,6 +2,8 @@ require("fidget").setup()
 require("neodev").setup()
 require "secretaire.lsp.autoformat"
 
+test = 1
+
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
@@ -46,6 +48,27 @@ end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+
+vim.diagnostic.config({
+    underline = true,
+    update_in_insert = false,
+    virtual_text = {
+        spacing = 4,
+        source = "if_many",
+        prefix = "●",
+        -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
+        -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
+        -- prefix = "icons",
+    },
+    severity_sort = true,
+})
+
+local icons = require "secretaire.icons"
+
+vim.fn.sign_define("DiagnosticSignError", { text = icons.DiagnosticError })
+vim.fn.sign_define("DiagnosticSignWarn", { text = icons.DiagnosticWarn })
+vim.fn.sign_define("DiagnosticSignHint", { text = icons.DiagnosticHint })
+vim.fn.sign_define("DiagnosticSignInfo", { text = icons.DiagnosticInfo })
 
 local servers = require("secretaire.lsp.servers")
 
