@@ -1,0 +1,5 @@
+require("plugins.coding")
+require("plugins.editor")
+require("plugins.lsp")
+require("plugins.util")
+require("plugins.ui")

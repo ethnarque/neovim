@@ -1,17 +1,8 @@
-{ pkgs ? import <nixpkgs> { } }:
-
-let
-  core-nvim = pkgs.stdenv.mkDerivation {
-    name = "core-nvim";
-    src = ./modules/core.nvim;
-    installPhase = ''
-      mkdir -p $out
-      cp -r ./* $out/
-    '';
-  };
-in
+{ pkgs }:
 ''
-  lua vim.opt.runtimepath:append("${core-nvim}")
+  lua vim.opt.runtimepath:append("${pkgs.core-nvim}")
+  lua vim.opt.runtimepath:append("${pkgs.core-plugins-nvim}")
   lua require "core"
   luafile ~/.config/nvim/init.lua
+  lua require "plugins"
 ''

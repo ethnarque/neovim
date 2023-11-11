@@ -15,15 +15,6 @@ pkgs.wrapNeovim pkgs.neovim-unwrapped {
     packages.core.start = with pkgs.vimPlugins;[
       plenary-nvim
 
-      # Fuzzy finder
-      telescope-nvim
-
-      # LSP
-      nvim-lspconfig
-      neodev-nvim
-      fidget-nvim
-
-      # Autocompletion
       nvim-cmp
       cmp-nvim-lsp
       cmp-nvim-lua
@@ -33,8 +24,11 @@ pkgs.wrapNeovim pkgs.neovim-unwrapped {
       cmp-emoji
       cmp-nvim-lsp-signature-help
       cmp-npm
-      luasnip
       cmp_luasnip
+      luasnip
+      friendly-snippets
+
+      # Fuzzy finder
 
       # Misc
       vim-sleuth
@@ -44,28 +38,38 @@ pkgs.wrapNeovim pkgs.neovim-unwrapped {
       pkgs.core-nvim
       pkgs.core-plugins-nvim
 
-      mini-files-nvim
-      mini-pairs-nvim
-
+      nvim-web-devicons
     ];
     packages.core.opt = with pkgs.vimPlugins; [
+      # Autocompletion
+      # LSP
+      nvim-lspconfig
+      neodev-nvim
+      fidget-nvim
+      # Formatter
+      conform-nvim
       comment-nvim
       nvim-dap
       nvim-dap-ui
 
+      mini-files-nvim
+      mini-pairs-nvim
+
       which-key-nvim
       toggleterm-nvim
-
+      # Treesitter
       nvim-treesitter.withAllGrammars # better code coloring
       playground
       nvim-treesitter-textobjects
       nvim-treesitter-context
       nvim-treesitter-parsers.comment
+      nvim-ts-autotag
 
-      nvim-web-devicons
 
       dashboard-nvim
       persistence-nvim
+
+      telescope-nvim
     ];
   };
 }
