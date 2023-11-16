@@ -4,5 +4,4 @@
   lua vim.opt.runtimepath:append("${pkgs.core-plugins-nvim}")
   lua require "core"
   lua require "plugins"
-  'luafile ~/.config/nvim/init.lua
 ''
