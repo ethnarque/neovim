@@ -1,5 +1,6 @@
 {
   inputs = {
+    givre.url = "github:pmlogist/givre";
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     neovim = {
@@ -25,6 +26,7 @@
               config.allowUnfree = true;
               overlays = [
                 inputs.neovim-nightly.overlay
+                inputs.givre.overlays.default
                 (import ./overlays.nix)
                 (import ./modules/core.nvim)
                 (import ./modules/plugins.nvim)
