@@ -115,11 +115,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1700094299,
-        "narHash": "sha256-a64xeFNngMY0x5uER5pO2lZkIkkzEmAfy6W0SgfxjEI=",
+        "lastModified": 1700242549,
+        "narHash": "sha256-mXoj4oG/zmslHOzZntESn8EkN5/2jczONKMUx0o72Ek=",
         "owner": "pmlogist",
         "repo": "givre",
-        "rev": "3cd47f8ddefbc98c0106b224aac17a7e4caac816",
+        "rev": "d376577755124556bd9334233be70a80991a1da1",
         "type": "github"
       },
       "original": {
