@@ -37,7 +37,7 @@ pkgs.wrapNeovim pkgs.neovim-unwrapped {
 
       pkgs.core-nvim
       pkgs.core-plugins-nvim
-      pkgs.givre-nvim
+      catppuccin-nvim
 
       nvim-web-devicons
     ];
