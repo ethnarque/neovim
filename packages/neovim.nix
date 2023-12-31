@@ -38,6 +38,9 @@ pkgs.wrapNeovim pkgs.neovim-unwrapped {
       pkgs.core-nvim
       pkgs.core-plugins-nvim
       catppuccin-nvim
+      rose-pine
+      auto-dark-mode-nvim
+      oxocarbon-nvim
 
       nvim-web-devicons
     ];

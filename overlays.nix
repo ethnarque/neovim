@@ -4,6 +4,7 @@ final: prev: {
   rustywind = import ./packages/rustywind.nix { pkgs = final; };
 
   vimPlugins = prev.vimPlugins // {
+    auto-dark-mode-nvim = import ./packages/auto-dark-mode.nix { pkgs = final; };
     mini-files-nvim = import ./packages/mini-files.nix { pkgs = final; };
     mini-indentscope = import ./packages/mini-indentscope.nix { pkgs = final; };
     mini-pairs-nvim = import ./packages/mini-pairs.nix { pkgs = final; };
