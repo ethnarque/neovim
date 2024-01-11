@@ -1,4 +1,5 @@
-{ pkgs }: pkgs.rustPlatform.buildRustPackage rec {
+{pkgs}:
+pkgs.rustPlatform.buildRustPackage rec {
   pname = "rustywind";
   version = "v0.16.0";
 

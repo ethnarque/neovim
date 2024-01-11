@@ -1,4 +1,5 @@
-{ pkgs }: pkgs.vimUtils.buildVimPlugin {
+{pkgs}:
+pkgs.vimUtils.buildVimPlugin {
   pname = "mini.pairs";
   version = "0.10.0";
   src = pkgs.fetchFromGitHub {

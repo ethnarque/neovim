@@ -1,4 +1,5 @@
-{ pkgs }: pkgs.vimUtils.buildVimPlugin {
+{pkgs}:
+pkgs.vimUtils.buildVimPlugin {
   pname = "mini.files";
   version = "0.10.0";
   src = pkgs.fetchFromGitHub {
@@ -9,4 +10,3 @@
   };
   meta.homepage = " https://github.com/echasnovski/mini.files ";
 }
-

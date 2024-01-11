@@ -1,8 +1,3 @@
--- local util = require("core.util")
---- Colorscheme
--- util.lazy_load("givre.nvim")
--- require("givre").setup()
-
 require("core.autocmds")
 require("core.opts")
 require("core.keybindings")

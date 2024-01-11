@@ -1,5 +1,5 @@
-{ pkgs }: pkgs.vimUtils.buildVimPlugin {
-
+{pkgs}:
+pkgs.vimUtils.buildVimPlugin {
   pname = "mini.indentscope";
   version = "0.7.0";
   src = pkgs.fetchFromGitHub {

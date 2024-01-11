@@ -1,4 +1,5 @@
-{ pkgs }: with pkgs;[
+{pkgs}:
+with pkgs; [
   fzy
   ripgrep
   git
@@ -25,6 +26,7 @@
   # Formatter
   isort
   black
+  alejandra
   nixpkgs-fmt
   nodePackages.prettier
   prettierd
