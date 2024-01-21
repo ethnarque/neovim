@@ -1,7 +1,11 @@
+local group = vim.api.nvim_create_augroup("secretaire-completion", { clear = true })
+
+
+
 --- nvim cmp
 --- Code completions
 vim.api.nvim_create_autocmd({ "VimEnter", "InsertEnter" }, {
-	-- group = group,
+	group = group,
 	callback = function()
 		local cmp = require("cmp")
 		require("luasnip.loaders.from_vscode").lazy_load()
@@ -33,6 +37,8 @@ vim.api.nvim_create_autocmd({ "VimEnter", "InsertEnter" }, {
 				{ name = "path" },
 			}),
 			formatting = {
+				expandable_indicator = true,
+				fields = { "kind", "abbr" },
 				format = function(entry, vim_item)
 					if vim.tbl_contains({ "path" }, entry.source.name) then
 						local icon, hl_group = require("nvim-web-devicons").get_icon(entry:get_completion_item().label)
@@ -57,6 +63,7 @@ vim.api.nvim_create_autocmd({ "VimEnter", "InsertEnter" }, {
 --- nvim-autopairs
 --- A super powerful autopair plugin for Neovim that supports multiple characters.
 vim.api.nvim_create_autocmd({ "InsertEnter" }, {
+	group = group,
 	callback = function()
 		local autopairs = require("nvim-autopairs")
 		local cmp_autopairs = require("nvim-autopairs.completion.cmp")
