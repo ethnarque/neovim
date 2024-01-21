@@ -69,6 +69,8 @@
     lspkind-nvim
     rose-pine
 
+    nvim-autopairs
+
     dashboard-nvim
     persistence-nvim
 
