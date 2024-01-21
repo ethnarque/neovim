@@ -69,6 +69,9 @@
     lspkind-nvim
     rose-pine
 
+    dashboard-nvim
+    persistence-nvim
+
     (vimUtils.buildVimPlugin {
       pname = "mini.files";
       version = "0.10.0";

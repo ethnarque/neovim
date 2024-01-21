@@ -1,9 +1,11 @@
 require("secretaire.global")
+
 require("secretaire.opts")
 require("secretaire.navigation")
 require("secretaire.completion")
 require("secretaire.editor")
 require("secretaire.keybindings")
+require("secretaire.dashboard")
 
 vim.cmd([[ colorscheme rose-pine-main ]])
 require("fidget").setup()
