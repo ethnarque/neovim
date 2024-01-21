@@ -1,4 +1,4 @@
-local state = _G.SecretaireGlobalState
+local state = _G.Secretaire
 
 vim.g.mapleader = state.keybindings.leader
 vim.g.maplocalleader = state.keybindings.leader

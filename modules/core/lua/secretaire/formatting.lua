@@ -1,28 +1,40 @@
-local util = require("core.util")
-local formatters = require("plugins.lsp.formatters")
-local is_enabled = true
+_G.Secretaire.formatting = {
+	__augroups = {},
+	autoformat = true,
+	filetypes = {
+		lua = { "stylua" },
+		nix = { "alejandra" },
+	},
+}
 
-
-util.lazy_load("conform.nvim")
-require("conform").setup({ formatters_by_ft = formatters })
+local state = _G.Secretaire.formatting
+local group = vim.api.nvim_create_augroup("secretaire-formatting", { clear = true })
 
 vim.api.nvim_create_user_command("FormatToggle", function()
-	is_enabled = not is_enabled
-	print("Setting autoformatting to:" .. tostring(is_enabled))
+	state.autoformat = not state.autoformat
+	print("Setting autoformatting to:" .. tostring(state.autoformat))
 end, {})
 
-local _augroups = {}
+vim.api.nvim_create_autocmd({ "VimEnter" }, {
+	group = group,
+	callback = function()
+		require("conform").setup({
+			formatters_by_ft = state.filetypes,
+		})
+	end,
+})
+
 local get_augroup = function(client)
-	if not _augroups[client.id] then
+	if not state.__augroups[client.id] then
 		local group_name = "lsp-format-" .. client.name
 		local id = vim.api.nvim_create_augroup(group_name, { clear = true })
-		_augroups[client.id] = id
+		state.__augroups[client.id] = id
 	end
 
-	return _augroups[client.id]
+	return state.__augroups[client.id]
 end
 
-vim.api.nvim_create_autocmd("LspAttach", {
+vim.api.nvim_create_autocmd({ "LspAttach" }, {
 	group = vim.api.nvim_create_augroup("lsp-attach-format", { clear = true }),
 	callback = function(args)
 		local client_id = args.data.client_id
@@ -37,7 +49,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			return
 		end
 
-		if client.name == "tsserver" and formatters[vim.bo.filetype] == nil then
+		if client.name == "tsserver" and state.filetypes[vim.bo.filetype] == nil then
 			return
 		end
 
@@ -45,11 +57,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			group = get_augroup(client),
 			buffer = bufnr,
 			callback = function()
-				if not is_enabled then
+				if not state.autoformat then
 					return
 				end
 
-				if formatters[vim.bo.filetype] then
+				if state.filetypes[vim.bo.filetype] then
 					require("conform").format()
 				else
 					vim.lsp.buf.format({

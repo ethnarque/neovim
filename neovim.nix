@@ -24,7 +24,6 @@ in
     configure = {
       customRC = ''
         lua vim.opt.runtimepath:append("${modules.core.module}")
-        lua vim.opt.runtimepath:append("${modules.nix.module}")
 
         lua require "secretaire.core"
       '';

@@ -1,6 +1,17 @@
-require("secretaire.global")
+---@class Secretaire
+_G.Secretaire = {
+	keybindings = {
+		leader = " ",
+	},
+	editor = {
+		auto_dark_mode = true,
+	},
+	lspconfig = {},
+}
 
 require("secretaire.opts")
+require("secretaire.formatting")
+require("secretaire.lsp")
 require("secretaire.navigation")
 require("secretaire.completion")
 require("secretaire.treesitter")
@@ -9,27 +20,6 @@ require("secretaire.keybindings")
 require("secretaire.dashboard")
 
 vim.cmd([[ colorscheme rose-pine-main ]])
-require("fidget").setup()
-require("neodev").setup()
-local lspconfig = require("lspconfig")
-
-lspconfig.nixd.setup({})
-
--- core.lsp.servers = function(servers)
--- 	servers.nixd.setup = {}
--- end
---
---
--- core.register()
-
-lspconfig.lua_ls.setup({})
-
-require("conform").setup({ formatters_by_ft = {
-	lua = { "stylua" },
-	nix = { "alejandra" },
-} })
--- require("core.autocmds")
--- require("core.keybindings")
 
 local auto_dark_mode = require("auto-dark-mode")
 
