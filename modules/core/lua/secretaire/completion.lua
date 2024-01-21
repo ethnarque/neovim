@@ -1,7 +1,5 @@
 local group = vim.api.nvim_create_augroup("secretaire-completion", { clear = true })
 
-
-
 --- nvim cmp
 --- Code completions
 vim.api.nvim_create_autocmd({ "VimEnter", "InsertEnter" }, {
