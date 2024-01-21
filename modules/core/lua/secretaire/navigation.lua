@@ -1,10 +1,6 @@
-local util = require("core.util")
-local group = util.augroup("plugins-editor")
-
+--- Mini Files
 vim.api.nvim_create_autocmd({ "BufReadPost", "VimEnter" }, {
-	group = group,
 	callback = function()
-		util.lazy_load("mini.files")
 		require("mini.files").setup({
 			windows = {
 				preview = true,
@@ -40,7 +36,7 @@ vim.api.nvim_create_autocmd({ "BufReadPost", "VimEnter" }, {
 		vim.api.nvim_create_autocmd("User", {
 			pattern = "MiniFilesActionRename",
 			callback = function(event)
-				require("core.util").lsp.on_rename(event.data.from, event.data.to)
+				require("secretaire.util").lsp.on_rename(event.data.from, event.data.to)
 			end,
 		})
 
@@ -54,19 +50,9 @@ vim.api.nvim_create_autocmd({ "BufReadPost", "VimEnter" }, {
 	end,
 })
 
-vim.api.nvim_create_autocmd("VimEnter", {
-	group = group,
-	callback = function()
-		vim.cmd([[ packadd toggleterm.nvim ]])
-	end,
-})
-
 --- Telescope
 vim.api.nvim_create_autocmd("VimEnter", {
-	group = group,
 	callback = function()
-		vim.cmd([[ packadd telescope.nvim ]])
-
 		require("telescope").setup({
 			defaults = {
 				mappings = {

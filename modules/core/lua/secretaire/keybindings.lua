@@ -1,7 +1,4 @@
-local lazy_load = require("core.util").lazy_load
-
 vim.defer_fn(function()
-	lazy_load("which-key.nvim")
 	require("which-key").register({
 		["<leader>c"] = { name = "[C]ode", _ = "which_key_ignore" },
 		["<leader>d"] = { name = "[D]ocument", _ = "which_key_ignore" },
@@ -42,12 +39,3 @@ vim.keymap.set("n", "<leader>ww", "<C-W>p", { desc = "Other window", remap = tru
 vim.keymap.set("n", "<leader>wd", "<C-W>c", { desc = "Delete window", remap = true })
 vim.keymap.set("n", "<leader>-", "<C-W>s", { desc = "Split window below", remap = true })
 vim.keymap.set("n", "<leader>|", "<C-W>v", { desc = "Split window right", remap = true })
-
--- Terminals
-local lazygit = require("core.util.terminal")
-
-vim.keymap.set("n", "<leader>ui", vim.show_pos, { desc = "Inspect Pos" })
-vim.keymap.set("n", "<leader>gg", function()
-	lazygit:toggle()
-end, { silent = true })
--- vim.keymap.set('n', '<C-/>', '<cmd>ToggleTermToggleAll<cr>', { desc = 'Show all openned terminal' })

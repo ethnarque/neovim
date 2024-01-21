@@ -1,0 +1,15 @@
+{
+  "eval": {
+    "target": {
+      "args": [
+        "--expr",
+        "with import <nixpkgs> { }; callPackage ./modules/core { }",
+        "--expr",
+        "with import <nixpkgs> { }; callPackage ./modules/nix.nvim { }",
+        "--expr",
+        "with import <nixpkgs> { }; callPackage ./modules/python.nvim { }"
+      ],
+      "installable": ""
+    }
+  }
+}

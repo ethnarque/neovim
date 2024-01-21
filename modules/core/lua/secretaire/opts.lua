@@ -1,5 +1,7 @@
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
+local state = _G.SecretaireGlobalState
+
+vim.g.mapleader = state.keybindings.leader
+vim.g.maplocalleader = state.keybindings.leader
 
 local opt = vim.opt
 

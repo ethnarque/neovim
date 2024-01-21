@@ -1,6 +1,6 @@
 {pkgs}: let
   customRC = import ../custom-rc.nix {inherit pkgs;};
-  dependencies = import ../dependencies.nix {inherit pkgs;};
+  dependencies = import ../dependencies.nix {inherit pkgs;} ++ (with pkgs; [hello lazygit]);
 in
   pkgs.wrapNeovim pkgs.neovim-unwrapped {
     viAlias = true;
