@@ -9,7 +9,7 @@
   ...
 } @ args
 : let
-  deps = with args.pkgs; dependencies ++ modules.core.dependencies ++ modules.nix.dependencies;
+  deps = with args.pkgs; dependencies ++ modules.core.dependencies ++ modules.nix.dependencies ++ modules.lua.dependencies;
   modules = callPackage ./modules {};
 in
   wrapNeovim neovim-unwrapped {
@@ -24,8 +24,16 @@ in
     configure = {
       customRC = ''
         lua vim.opt.runtimepath:append("${modules.core.module}")
+        lua vim.opt.runtimepath:append("${modules.lua.module}")
+        lua vim.opt.runtimepath:append("${modules.nix.module}")
+
+        lua require "secretaire"
 
         lua require "secretaire.core"
+        lua require "secretaire.nix"
+        lua require "secretaire.lua"
+
+        lua require "secretaire":start()
       '';
 
       packages.core.start = with vimPlugins;

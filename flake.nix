@@ -58,7 +58,6 @@
     #   };
     # });
 
-
     devShells = forAllSystems (pkgs: import ./dev-shells.nix {inherit pkgs;});
   };
 }

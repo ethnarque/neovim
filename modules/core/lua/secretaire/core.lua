@@ -1,12 +1,4 @@
----@class Secretaire
-_G.Secretaire = {
-	keybindings = {
-		leader = " ",
-	},
-	editor = {
-		auto_dark_mode = true,
-	},
-}
+Secretaire:init()
 
 require("secretaire.settings.opts")
 require("secretaire.settings.keybindings")

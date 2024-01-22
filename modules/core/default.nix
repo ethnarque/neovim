@@ -5,10 +5,7 @@
   fzy,
   git,
   lib,
-  lua-language-server,
-  nixd,
   ripgrep,
-  stylua,
   vimPlugins,
   vimUtils,
   ...
@@ -29,12 +26,6 @@
     fzy
     ripgrep
     git
-    # minimal lsp
-    lua-language-server
-    nixd
-    # minimal formatters
-    stylua
-    alejandra
   ];
 
   packages = with vimPlugins; [

@@ -27,7 +27,6 @@ function M.get_clients(opts)
 	return opts and opts.filter and vim.tbl_filter(opts.filter, ret) or ret
 end
 
----@param bufnr number
 function M.on_attach(_, bufnr)
 	local nmap = function(keys, func, desc)
 		if desc then
