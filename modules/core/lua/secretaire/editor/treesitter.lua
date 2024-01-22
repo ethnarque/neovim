@@ -68,7 +68,7 @@ vim.api.nvim_create_autocmd({ "VimEnter" }, {
 })
 
 --- nvim-treesitter-context
-vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost", "BufNewFile" }, {
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost" }, {
 	group = group,
 	callback = function()
 		require("treesitter-context").setup({
@@ -77,7 +77,3 @@ vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost", "BufNewFile" }, {
 		})
 	end,
 })
-
-
-
-

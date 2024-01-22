@@ -71,6 +71,8 @@
 
     nvim-autopairs
 
+    lualine-nvim
+
     dashboard-nvim
     persistence-nvim
 

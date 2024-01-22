@@ -6,47 +6,18 @@ _G.Secretaire = {
 	editor = {
 		auto_dark_mode = true,
 	},
-	lspconfig = {},
 }
 
-require("secretaire.opts")
-require("secretaire.formatting")
-require("secretaire.lsp")
-require("secretaire.navigation")
-require("secretaire.completion")
-require("secretaire.treesitter")
-require("secretaire.editor")
-require("secretaire.keybindings")
-require("secretaire.dashboard")
+require("secretaire.settings.opts")
+require("secretaire.settings.keybindings")
 
-vim.cmd([[ colorscheme rose-pine-main ]])
+require("secretaire.ui.colorscheme")
+require("secretaire.ui.dashboard")
+require("secretaire.ui.statusline")
 
-local auto_dark_mode = require("auto-dark-mode")
+require("secretaire.editor.completion")
+require("secretaire.editor.formatting")
+require("secretaire.editor.navigation")
+require("secretaire.editor.treesitter")
 
-auto_dark_mode.setup({
-	update_interval = 1000,
-	set_dark_mode = function()
-		require("rose-pine").setup({
-			groups = {
-				background = "#101010",
-			},
-			highlight_groups = {
-				WinSeparator = { fg = "#1A1A1A" },
-				EndOfBuffer = { fg = "#101010" },
-			},
-		})
-		vim.cmd("colorscheme rose-pine-main")
-	end,
-	set_light_mode = function()
-		require("rose-pine").setup({
-			groups = {
-				background = "base",
-			},
-			highlight_groups = {
-				WinSeparator = { fg = "base" },
-				EndOfBuffer = { fg = "base" },
-			},
-		})
-		vim.cmd("colorscheme rose-pine-dawn")
-	end,
-})
+require("secretaire.diagnostics.lsp")
