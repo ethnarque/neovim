@@ -13,15 +13,14 @@ _G.Secretaire.lsp = {
 	},
 }
 
-local state = _G.Secretaire.lsp
-
 local icons = require("secretaire.icons")
-local capabitilies = require("secretaire.lsp.utils.capabitilies")
-local on_attach = require("secretaire.lsp.utils.on_attach")
+local capabitilies = require("secretaire.utils.lsp").get_capabilities()
+local on_attach = require("secretaire.utils.lsp").on_attach
 
+local state = _G.Secretaire.lsp
 local group = vim.api.nvim_create_augroup("secretaire-lsp", { clear = true })
 
-vim.api.nvim_create_autocmd({ "BufReadPre", "BufWritePost", "BufNewFile" }, {
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost" }, {
 	group = group,
 	callback = function()
 		local diagnostics = { "Error", "Warn", "Hint", "Info" }
