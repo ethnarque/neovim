@@ -1,17 +1,17 @@
-{
-  lib,
-  lua-language-server,
-  stylua,
-  vimUtils,
-  ...
-}: let
+{ lib
+, lua-language-server
+, stylua
+, vimUtils
+, ...
+}:
+let
   dependencies = [
     lua-language-server
     stylua
   ];
 
   module = vimUtils.buildVimPlugin {
-    pname = "secretaire-lua";
+    pname = "secretaire.lua";
     version = "0.1";
     src = ./.;
     installPhase = ''
@@ -19,6 +19,7 @@
       cd -r ./* $out
     '';
   };
-in {
+in
+{
   inherit dependencies module;
 }

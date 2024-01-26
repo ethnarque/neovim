@@ -1,19 +1,15 @@
-{pkgs, ...}: let
-  modules = pkgs.callPackage ./modules {};
-in {
+{ pkgs, ... }:
+let
+  modules = map (path: pkgs.callPackage path { }) [
+    ./modules/core
+    ./modules/nix
+    ./modules/lua
+  ];
+in
+{
   default = pkgs.mkShell {
     buildInputs = [
-      (pkgs.callPackage ./neovim.nix {
-        inherit pkgs;
-        dependencies = [];
-        packages = [
-          # modules.nix.module
-        ];
-        # modules = with pkgs; [
-        #   secretaire.nix
-        #   secretaire.lua
-        # ];
-      })
+      (pkgs.callPackage ./neovim.nix { inherit modules; })
     ];
   };
 }

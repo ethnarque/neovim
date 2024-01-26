@@ -1,4 +1,4 @@
-{pkgs}:
+{ pkgs }:
 pkgs.vimUtils.buildVimPlugin {
   pname = "mini.indentscope";
   version = "0.7.0";

@@ -1,4 +1,4 @@
-{pkgs}:
+{ pkgs }:
 pkgs.vimUtils.buildVimPlugin {
   pname = "auto-dark-mode.nvim";
   version = "0.10.0";

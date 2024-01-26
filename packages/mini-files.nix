@@ -1,4 +1,4 @@
-{pkgs}:
+{ pkgs }:
 pkgs.vimUtils.buildVimPlugin {
   pname = "mini.files";
   version = "0.10.0";

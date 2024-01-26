@@ -1,18 +1,18 @@
-{
-  lib,
-  alejandra,
-  nixd,
-  vimUtils,
-  python3Packages,
-  ...
-}: let
-  dependencies = with python3Packages; [
-    alejandra
+{ lib
+, nixd
+, nixpkgs-fmt
+, vimUtils
+, python3Packages
+, ...
+}:
+let
+  dependencies = [
     nixd
+    nixpkgs-fmt
   ];
 
   module = vimUtils.buildVimPlugin {
-    pname = "secretaire-nix";
+    pname = "secretaire.nix";
     version = "0.1";
     src = ./.;
     installPhase = ''
@@ -20,6 +20,7 @@
       cd -r ./* $out
     '';
   };
-in {
+in
+{
   inherit dependencies module;
 }

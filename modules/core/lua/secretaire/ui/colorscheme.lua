@@ -8,11 +8,12 @@ system = vim.loop.os_uname().sysname
 if system == "Linux" and os.getenv("XDG_CURRENT_DESKTOP") == "" then
 	require("rose-pine").setup({
 		groups = {
-			background = "#101010",
+			background = "#1E1E1E",
 		},
 		highlight_groups = {
-			WinSeparator = { fg = "#1A1A1A" },
-			EndOfBuffer = { fg = "#101010" },
+			CursorLine = { bg = "#272727" },
+			EndOfBuffer = { fg = "#1E1E1E" },
+			WinSeparator = { fg = "#000000" },
 		},
 	})
 	vim.cmd("colorscheme rose-pine-main")
@@ -22,11 +23,12 @@ else
 		set_dark_mode = function()
 			require("rose-pine").setup({
 				groups = {
-					background = "#101010",
+					background = "#1E1E1E",
 				},
 				highlight_groups = {
-					WinSeparator = { fg = "#1A1A1A" },
-					EndOfBuffer = { fg = "#101010" },
+					CursorLine = { bg = "#272727" },
+					EndOfBuffer = { fg = "#1E1E1E" },
+					WinSeparator = { fg = "#000000" },
 				},
 			})
 			vim.cmd("colorscheme rose-pine-main")

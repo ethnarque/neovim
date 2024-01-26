@@ -16,18 +16,13 @@
     };
   };
 
-  outputs = inputs @ {
-    self,
-    nixpkgs,
-    ...
-  }: let
-    forAllSystems = function:
-      nixpkgs.lib.genAttrs [
-        "x86_64-linux"
-        "aarch64-darwin"
-      ]
-      (
-        system:
+  outputs = inputs @ { self, nixpkgs, ... }:
+    let
+      systems = [ "x86_64-linux" "i686-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
+
+      forAllSystems = function:
+        nixpkgs.lib.genAttrs systems (
+          system:
           function (
             let
               n = import nixpkgs {
@@ -41,23 +36,24 @@
                 ];
               };
             in
-              n
+            n
           )
-      );
-  in {
-    # packages = forAllSystems (pkgs: {
-    #   default = pkgs.neovim;
-    # });
+        );
+    in
+    {
+      # packages = forAllSystems (pkgs: {
+      #   default = pkgs.neovim;
+      # });
 
-    formatter = forAllSystems (pkgs: pkgs.alejandra);
+      formatter = forAllSystems (pkgs: pkgs.nixpkgs-fmt);
 
-    # apps = forAllSystems (pkgs: {
-    #   default = {
-    #     type = "app";
-    #     program = "${pkgs.neovim}/bin/nvim";
-    #   };
-    # });
+      # apps = forAllSystems (pkgs: {
+      #   default = {
+      #     type = "app";
+      #     program = "${pkgs.neovim}/bin/nvim";
+      #   };
+      # });
 
-    devShells = forAllSystems (pkgs: import ./dev-shells.nix {inherit pkgs;});
-  };
+      devShells = forAllSystems (pkgs: import ./dev-shells.nix { inherit pkgs; });
+    };
 }

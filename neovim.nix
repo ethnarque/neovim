@@ -1,72 +1,42 @@
-{
-  callPackage,
-  dependencies ? [],
-  lib,
-  neovim-unwrapped,
-  packages ? [],
-  vimPlugins,
-  wrapNeovim,
-  ...
-} @ args
-: let
-  deps = with args.pkgs; dependencies ++ modules.core.dependencies ++ modules.nix.dependencies ++ modules.lua.dependencies;
-  modules = callPackage ./modules {};
+{ lib
+, modules ? [ ]
+, neovim-unwrapped
+, vimPlugins
+, wrapNeovim
+, ...
+}:
+with lib;
+let
+  #deps = with args.pkgs; modules.core.dependencies ++ modules.nix.dependencies ++ modules.lua.dependencies;
+  deps = concatMap (x: x.dependencies) modules;
+
+  packages = concatMap (x: x.packages) (lib.filter (x: builtins.hasAttr "packages" x) modules);
+
+  runtimepathList = concatStringsSep "\n"
+    (map (x: ''lua vim.opt.runtimepath:append "${x.module}"'') modules);
+
+  requireList = concatStringsSep "\n"
+    (map (x: ''lua require "${x.module.pname}"'') modules);
+
+  customRC = concatStringsSep "\n" [
+    runtimepathList
+    ''lua require "secretaire"''
+    requireList
+    ''lua require "secretaire":start()''
+  ];
+
 in
-  wrapNeovim neovim-unwrapped {
-    viAlias = true;
-    vimAlias = true;
-    withPython3 = false;
-    withNodeJs = false;
-    withRuby = false;
+wrapNeovim neovim-unwrapped {
+  viAlias = true;
+  vimAlias = true;
+  withPython3 = false;
+  withNodeJs = false;
+  withRuby = false;
 
-    extraMakeWrapperArgs = ''--prefix PATH : ""${lib.makeBinPath deps}'';
+  extraMakeWrapperArgs = ''--prefix PATH : ""${lib.makeBinPath deps}'';
 
-    configure = {
-      customRC = ''
-        lua vim.opt.runtimepath:append("${modules.core.module}")
-        lua vim.opt.runtimepath:append("${modules.lua.module}")
-        lua vim.opt.runtimepath:append("${modules.nix.module}")
-
-        lua require "secretaire"
-
-        lua require "secretaire.core"
-        lua require "secretaire.nix"
-        lua require "secretaire.lua"
-
-        lua require "secretaire":start()
-      '';
-
-      packages.core.start = with vimPlugins;
-        [
-          rose-pine
-          plenary-nvim
-
-          nvim-cmp
-          cmp-nvim-lsp
-          cmp-nvim-lua
-          cmp-buffer
-          cmp-path
-          cmp-cmdline
-          cmp-emoji
-          cmp-nvim-lsp-signature-help
-          cmp-npm
-          cmp_luasnip
-          luasnip
-          friendly-snippets
-          lspkind-nvim
-          nvim-web-devicons
-
-          nvim-lspconfig
-
-          # Treesitter
-          nvim-treesitter.withAllGrammars # better code coloring
-          playground
-          nvim-treesitter-textobjects
-          nvim-treesitter-context
-          nvim-treesitter-parsers.comment
-          nvim-ts-autotag
-        ]
-        ++ packages
-        ++ modules.core.packages;
-    };
-  }
+  configure = {
+    inherit customRC;
+    packages.core.start = packages;
+  };
+}

@@ -15,7 +15,7 @@ vim.api.nvim_create_user_command("FormatToggle", function()
 	print("Setting autoformatting to:" .. tostring(Secretaire.formatting.autoformat))
 end, {})
 
-Secretaire:register(function()
+Secretaire:enqueue_autocmd(function()
 	return vim.api.nvim_create_autocmd({ "BufReadPost" }, {
 		group = group,
 		callback = function()
@@ -26,7 +26,7 @@ Secretaire:register(function()
 	})
 end)
 
-Secretaire:register(function()
+Secretaire:enqueue_autocmd(function()
 	return vim.api.nvim_create_autocmd({ "LspAttach" }, {
 		group = vim.api.nvim_create_augroup("lsp-attach-format", { clear = true }),
 		callback = function(args)

@@ -20,7 +20,7 @@ function Secretaire:init()
 	return o
 end
 
-function Secretaire:register(autocmd)
+function Secretaire:enqueue_autocmd(autocmd)
 	table.insert(self.autocmd_queue, autocmd)
 end
 

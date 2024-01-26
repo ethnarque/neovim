@@ -1,17 +1,17 @@
-{
-  alejandra,
-  curl,
-  fetchFromGitHub,
-  fzy,
-  git,
-  lib,
-  ripgrep,
-  vimPlugins,
-  vimUtils,
-  ...
-}: let
+{ alejandra
+, curl
+, fetchFromGitHub
+, fzy
+, git
+, lib
+, ripgrep
+, vimPlugins
+, vimUtils
+, ...
+}:
+let
   module = vimUtils.buildVimPlugin {
-    pname = "secretaire-core";
+    pname = "secretaire.core";
     version = "0.1";
     src = ./.;
     installPhase = ''
@@ -67,6 +67,14 @@
     dashboard-nvim
     persistence-nvim
 
+    nvim-treesitter.withAllGrammars # better code coloring
+    playground
+    nvim-treesitter-textobjects
+    nvim-treesitter-context
+    nvim-treesitter-parsers.comment
+    nvim-ts-autotag
+
+
     (vimUtils.buildVimPlugin {
       pname = "mini.files";
       version = "0.10.0";
@@ -92,6 +100,7 @@
       }
     )
   ];
-in {
+in
+{
   inherit dependencies module packages;
 }

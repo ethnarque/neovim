@@ -9,7 +9,7 @@ local on_attach = require("secretaire.utils.lsp").on_attach
 local state = _G.Secretaire.lsp
 local group = vim.api.nvim_create_augroup("secretaire-lsp", { clear = true })
 
-Secretaire:register(function()
+Secretaire:enqueue_autocmd(function()
 	vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost", "BufNewFile" }, {
 		group = group,
 		once = true,
