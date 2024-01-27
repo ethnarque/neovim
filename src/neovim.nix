@@ -12,22 +12,25 @@ with lib;
 let
   m = map (path: callPackage path { }) modules;
 
-  deps = concatMap (x: x.dependencies) m;
+  dependencies = makeBinPath (concatMap (x: x.dependencies) m);
 
   packages = concatMap (x: x.packages) (lib.filter (x: builtins.hasAttr "packages" x) m);
 
-  runtimepathList = concatStringsSep "\n"
-    (map (x: ''lua vim.opt.runtimepath:append "${x.module}"'') m);
+  secretaireRtp = concatStringsSep "\n"
+    (map (x: ''vim.opt.runtimepath:append "${x.module}"'') m);
 
-  requireList = concatStringsSep "\n"
-    (map (x: let in ''lua require "${x.module.pname}"'') m);
+  secretaireModules = concatStringsSep "\n"
+    (map (x: let in ''require "${x.module.pname}"'') m);
 
-  customRC = concatStringsSep "\n" [
-    runtimepathList
-    ''lua require "secretaire"''
-    requireList
-    ''lua require "secretaire":start()''
-  ];
+
+  customRC = ''
+    lua << EOF
+        ${secretaireRtp}
+        require("secretaire")
+        ${secretaireModules}
+        require("secretaire"):start()
+    EOF
+  '';
 in
 wrapNeovim (if (package != null) then package else neovim-unwrapped) {
   viAlias = true;
@@ -36,7 +39,7 @@ wrapNeovim (if (package != null) then package else neovim-unwrapped) {
   withNodeJs = false;
   withRuby = false;
 
-  extraMakeWrapperArgs = ''--prefix PATH : ""${lib.makeBinPath deps}'';
+  extraMakeWrapperArgs = ''--prefix PATH : ""${dependencies}'';
 
   configure = {
     inherit customRC;
