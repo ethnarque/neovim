@@ -47,6 +47,24 @@
 
       formatter = forAllSystems (pkgs: pkgs.nixpkgs-fmt);
 
+      packages = forAllSystems (pkgs: {
+        default = { };
+        server = pkgs.callPackage ./neovim.nix {
+          modules = map (path: pkgs.callPackage path { }) [
+            ./modules/core
+            ./modules/nix
+            ./modules/lua
+          ];
+        };
+      });
+
+      apps = forAllSystems (pkgs: {
+        server = {
+          type = "app";
+          programs = "${self.packages.server}/bin/nvim";
+        };
+      });
+
       # apps = forAllSystems (pkgs: {
       #   default = {
       #     type = "app";
