@@ -1,7 +1,15 @@
-{ callPackage, lib, modules ? [ ], neovim-unwrapped, vimPlugins, wrapNeovim, ... }:
+{ callPackage
+, lib
+, neovim-nightly
+, neovim-unwrapped
+, vimPlugins
+, wrapNeovim
+, modules ? [ ]
+, package ? null
+, ...
+}:
 with lib;
 let
-
   m = map (path: callPackage path { }) modules;
 
   deps = concatMap (x: x.dependencies) m;
@@ -21,7 +29,7 @@ let
     ''lua require "secretaire":start()''
   ];
 in
-wrapNeovim neovim-unwrapped {
+wrapNeovim (if (package != null) then package else neovim-unwrapped) {
   viAlias = true;
   vimAlias = true;
   withPython3 = false;

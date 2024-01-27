@@ -21,57 +21,76 @@
       systems = [ "x86_64-linux" "i686-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
 
       forAllSystems = function:
-        nixpkgs.lib.genAttrs systems (
+        (nixpkgs.lib.genAttrs systems (
           system:
           function (
             let
-              n = import nixpkgs {
+              pkgs = import nixpkgs {
                 inherit system;
                 config.allowUnfree = true;
                 overlays = [
-                  # inputs.neovim-nightly.overlay
-                  # (import ./overlays.nix)
-                  # (import ./modules/core.nvim)
-                  # (import ./modules/plugins.nvim)
+                  (final: prev: {
+                    inherit (inputs.neovim-nightly.overlay final prev) neovim-nightly;
+                  })
                 ];
               };
             in
-            n
+            { inherit pkgs system; }
           )
-        );
+        ));
     in
     {
-      # packages = forAllSystems (pkgs: {
-      #   default = pkgs.neovim;
-      # });
 
-      formatter = forAllSystems (pkgs: pkgs.nixpkgs-fmt);
+      formatter = forAllSystems ({ pkgs, ... }: pkgs.nixpkgs-fmt);
 
-      packages = forAllSystems (pkgs: {
-        default = { };
-        server = pkgs.callPackage ./neovim.nix {
-          modules = map (path: pkgs.callPackage path { }) [
+      packages = forAllSystems ({ pkgs, system }: rec {
+        secretaire = pkgs.callPackage ./src/neovim.nix {
+          modules = [
             ./modules/core
             ./modules/nix
             ./modules/lua
           ];
         };
+
+        default = secretaire;
+
+        nightly = secretaire.override {
+          package = pkgs.neovim-unwrapped;
+        };
+
+        server = pkgs.callPackage ./src/neovim.nix {
+          modules = [
+            ./modules/core
+            ./modules/nix
+          ];
+        };
       });
 
-      apps = forAllSystems (pkgs: {
+      apps = forAllSystems ({ pkgs, ... }: {
+        default = {
+          type = "app";
+          programs = "${self.packages.default}/bin/nvim";
+        };
+
+        dev = {
+          type = "app";
+          programs = "${self.packages.dev}/bin/nvim";
+        };
+
         server = {
           type = "app";
           programs = "${self.packages.server}/bin/nvim";
         };
       });
 
-      # apps = forAllSystems (pkgs: {
-      #   default = {
-      #     type = "app";
-      #     program = "${pkgs.neovim}/bin/nvim";
-      #   };
-      # });
+      devShells = forAllSystems ({ pkgs, system }: {
+        default = pkgs.mkShell {
+          packages = [ self.packages.${system}.default ];
+        };
 
-      devShells = forAllSystems (pkgs: import ./dev-shells.nix { inherit pkgs; });
+        server = pkgs.mkShell {
+          packages = [ self.packages.${system}.server ];
+        };
+      });
     };
 }

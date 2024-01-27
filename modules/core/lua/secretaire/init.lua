@@ -6,9 +6,7 @@ Secretaire = {
 	formatting = {
 		__augroups = {},
 		autoformat = true,
-		filetypes = {
-			lua = { "stylua" },
-		},
+		filetypes = {},
 	},
 }
 Secretaire._index = Secretaire
