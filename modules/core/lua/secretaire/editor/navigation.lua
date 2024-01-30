@@ -36,7 +36,7 @@ vim.api.nvim_create_autocmd({ "BufReadPost", "VimEnter" }, {
 		vim.api.nvim_create_autocmd("User", {
 			pattern = "MiniFilesActionRename",
 			callback = function(event)
-				require("secretaire.lsp.utils").on_rename(event.data.from, event.data.to)
+				require("secretaire.utils.lsp").on_rename(event.data.from, event.data.to)
 			end,
 		})
 
