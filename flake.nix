@@ -21,23 +21,23 @@
       systems = [ "x86_64-linux" "i686-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
 
       forAllSystems = function:
-        (nixpkgs.lib.genAttrs systems (
-          system:
-          function (
-            let
-              pkgs = import nixpkgs {
-                inherit system;
-                config.allowUnfree = true;
-                overlays = [
-                  (final: prev: {
-                    inherit (inputs.neovim-nightly.overlay final prev) neovim-nightly;
-                  })
-                ];
-              };
-            in
-            { inherit pkgs system; }
-          )
-        ));
+        (nixpkgs.lib.genAttrs systems
+          (system: function
+            (
+              let
+                pkgs = import nixpkgs {
+                  inherit system;
+                  config.allowUnfree = true;
+                  overlays = [
+                    (final: prev: {
+                      inherit (inputs.neovim-nightly.overlay final prev) neovim-nightly;
+                    })
+                  ];
+                };
+              in
+              { inherit pkgs system; }
+            )
+          ));
     in
     {
 
@@ -46,9 +46,18 @@
       packages = forAllSystems ({ pkgs, system }: rec {
         secretaire = pkgs.callPackage ./src/neovim.nix {
           modules = [
-            ./modules/core
-            ./modules/nix
-            ./modules/lua
+            ./src/core
+            ./src/languages/bash
+            ./src/languages/css
+            ./src/languages/go
+            ./src/languages/html
+            ./src/languages/javascript
+            ./src/languages/json
+            ./src/languages/lua
+            ./src/languages/nix
+            ./src/languages/ocaml
+            ./src/languages/python
+            ./src/languages/rust
           ];
         };
 
@@ -56,12 +65,17 @@
 
         nightly = secretaire.override {
           package = pkgs.neovim-unwrapped;
+          modules = self.packages.${system}.default.modules;
         };
 
         server = pkgs.callPackage ./src/neovim.nix {
           modules = [
-            ./modules/core
-            ./modules/nix
+            ./src/core
+            ./src/languages/bash
+            ./src/languages/json
+            ./src/languages/lua
+            ./src/languages/nix
+            ./src/languages/python
           ];
         };
       });
@@ -72,9 +86,9 @@
           programs = "${self.packages.default}/bin/nvim";
         };
 
-        dev = {
+        nightly = {
           type = "app";
-          programs = "${self.packages.dev}/bin/nvim";
+          programs = "${self.packages.nightly}/bin/nvim";
         };
 
         server = {
@@ -86,6 +100,10 @@
       devShells = forAllSystems ({ pkgs, system }: {
         default = pkgs.mkShell {
           packages = [ self.packages.${system}.default ];
+        };
+
+        nightly = pkgs.mkShell {
+          packages = [ self.packages.${system}.nightly ];
         };
 
         server = pkgs.mkShell {

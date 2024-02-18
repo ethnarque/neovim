@@ -1,6 +1,5 @@
 { callPackage
 , lib
-, neovim-nightly
 , neovim-unwrapped
 , vimPlugins
 , wrapNeovim
@@ -8,29 +7,34 @@
 , package ? null
 , ...
 }:
-with lib;
 let
+  inherit (lib)
+    concatMap
+    concatStringsSep
+    filter
+    makeBinPath;
+
   m = map (path: callPackage path { }) modules;
-
-  dependencies = makeBinPath (concatMap (x: x.dependencies) m);
-
-  packages = concatMap (x: x.packages) (lib.filter (x: builtins.hasAttr "packages" x) m);
-
-  secretaireRtp = concatStringsSep "\n"
-    (map (x: ''vim.opt.runtimepath:append "${x.module}"'') m);
-
-  secretaireModules = concatStringsSep "\n"
-    (map (x: let in ''require "${x.module.pname}"'') m);
-
 
   customRC = ''
     lua << EOF
-        ${secretaireRtp}
-        require("secretaire")
-        ${secretaireModules}
-        require("secretaire"):start()
+        ${concatStringsSep "\n"
+            (map
+                (mod: ''vim.opt.runtimepath:append "${mod.luaModule}"'')
+                (filter (mod: builtins.hasAttr "luaModule" mod) m))}
+
+        ${concatStringsSep "\n"
+            (map
+                (mod: ''require "${mod.luaModule.pname}"'')
+                (filter (mod: builtins.hasAttr "luaModule" mod) m))}
     EOF
+
+    luafile ~/.config/nvim/init.lua
   '';
+
+  dependencies = makeBinPath (concatMap (x: x.dependencies) m);
+
+  vimPlugins = concatMap (x: x.packages) (filter (x: builtins.hasAttr "packages" x) m);
 in
 wrapNeovim (if (package != null) then package else neovim-unwrapped) {
   viAlias = true;
@@ -39,10 +43,10 @@ wrapNeovim (if (package != null) then package else neovim-unwrapped) {
   withNodeJs = false;
   withRuby = false;
 
-  extraMakeWrapperArgs = ''--prefix PATH : ""${dependencies}'';
+  extraMakeWrapperArgs = ''--prefix PATH : "${dependencies}"'';
 
   configure = {
     inherit customRC;
-    packages.core.start = packages;
+    packages.core.start = vimPlugins;
   };
 }
