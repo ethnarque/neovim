@@ -32,7 +32,7 @@ let
     plenary-nvim
     # fuzzy find search
     telescope-nvim
-    #mini-files-nvim
+
     # lsp
     nvim-lspconfig
     neodev-nvim

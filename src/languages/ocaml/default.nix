@@ -1,6 +1,8 @@
-{ vimPlugins, ... }:
+{ ocamlPackages, vimPlugins, ... }:
 let
-  dependencies = [ ];
+  dependencies = [
+    ocamlPackages.ocaml-lsp
+  ];
 
   packages = with vimPlugins; [
     (nvim-treesitter.withPlugins (p: [

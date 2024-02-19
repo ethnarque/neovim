@@ -1,7 +1,8 @@
-{ eslint_d, prettierd, vimPlugins, ... }:
+{ eslint_d, prettierd, nodePackages, vimPlugins, ... }:
 let
   dependencies = [
     eslint_d
+    nodePackages.typescript-language-server
     prettierd
   ];
 
