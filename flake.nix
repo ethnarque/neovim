@@ -49,6 +49,9 @@
         secretaire = pkgs.callPackage ./src/neovim.nix {
           modules = [
             ./src/core
+
+            ./src/frameworks/svelte
+
             ./src/languages/bash
             ./src/languages/css
             ./src/languages/go
