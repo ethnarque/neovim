@@ -9,6 +9,7 @@ let
   packages = with vimPlugins; [
     (nvim-treesitter.withPlugins (p: [
       p.javascript
+      p.jsdoc
       p.tsx
       p.typescript
     ]))
