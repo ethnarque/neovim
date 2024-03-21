@@ -63,6 +63,7 @@ let
     nvim-autopairs
 
     lualine-nvim
+    trouble-nvim
 
     dashboard-nvim
     persistence-nvim
