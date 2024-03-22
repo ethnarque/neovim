@@ -18,6 +18,9 @@ cmp.setup({
         -- completion = cmp.config.window.bordered(),
         -- documentation = cmp.config.window.bordered(),
     },
+    experimental = {
+        ghost_text = true
+    },
     mapping = cmp.mapping.preset.insert({
         ['<Tab>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
         ['<S-Tab>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
@@ -88,7 +91,7 @@ local function rgb_to_hex(r, g, b)
     return string.format("#%02X%02X%02X", r, g, b)
 end
 
-local function hsl_to_hex(h, s, l)
+local function hsl(h, s, l)
     local r, g, b = hsl_to_rgb(h / 360, s / 100, l / 100)
     return rgb_to_hex(r, g, b)
 end
@@ -121,7 +124,7 @@ lspconfig.util.default_config = vim.tbl_extend(
         autostart = true
     })
 
-local signs = { Error = "󰫈 ", Warn = "󰋘", Hint = "󰋘", Info = "󰋘" }
+local signs = { Error = "󰫈 ", Warn = "󰋘 ", Hint = "󰋘 ", Info = "󰋘 " }
 
 for type, icon in pairs(signs) do
     local hl = "DiagnosticSign" .. type
@@ -145,71 +148,139 @@ vim.diagnostic.config({
     underline = true,
 })
 
----@class MontesquieuColor
-local colors = {
-    dark  = {
-        bg = hsl_to_hex(0, 0, 11),
-        bg_float = hsl_to_hex(0, 0, 9),
-        bg_focused = hsl_to_hex(0, 0, 20),
-        fg = hsl_to_hex(0, 0, 97),
-        fg_unfocused = "gray",
-        fg_focused = hsl_to_hex(0, 0, 100),
-        cursor_line = hsl_to_hex(0, 0, 16),
-        separator = hsl_to_hex(0, 0, 24),
+local colors    = {}
 
-        tokens = {
-            identifier = hsl_to_hex(0, 0, 90),
-            property = hsl_to_hex(201, 53, 82),
-            constant = "NONE",
-            comment = hsl_to_hex(0, 0, 50),
-            keyword = hsl_to_hex(214, 62, 69),
-            func = hsl_to_hex(333, 98, 84),
-            -- number = hsl_to_hex(0,0,25),
-            string = hsl_to_hex(194, 29, 61),
-            type = hsl_to_hex(21, 51, 75),
+colors.dark     = {
+    shade0 = hsl(0, 0, 9),
+    shade1 = hsl(0, 0, 13),
+    shade2 = hsl(0, 0, 18),
+    shade3 = hsl(0, 0, 22),
+    shade4 = hsl(0, 0, 33),
+    shade5 = hsl(0, 0, 50),
+    shade6 = hsl(0, 0, 65),
+    shade7 = hsl(0, 0, 90),
+    shade8 = hsl(0, 0, 97),
+    shade9 = hsl(0, 0, 100),
 
-        }
-    },
-    light = {
-        bg = hsl_to_hex(0, 0, 100),
-        bg_float = hsl_to_hex(0, 0, 97),
-        bg_focused = "NONE",
-        fg = hsl_to_hex(0, 0, 5),
-        fg_unfocused = hsl_to_hex(0, 0, 50),
-        fg_focused = hsl_to_hex(0, 0, 0),
-        cursor_line = "NONE",
-        separator = hsl_to_hex(0, 0, 24),
-
-        tokens = {
-            -- identifier = "NONE",
-            -- constant = "NONE",
-            comment = hsl_to_hex(0, 0, 43),
-            keyword = hsl_to_hex(233, 49, 71),
-            func = hsl_to_hex(330, 55, 75),
-            number = hsl_to_hex(0, 0, 25),
-            string = hsl_to_hex(194, 29, 51),
-            -- type = hsl_to_hex(21, 51, 75),
-        }
-    },
+    red = "",
+    pink0 = hsl(330, 45, 65),
+    pink1 = hsl(333, 98, 84),
+    yellow0 = hsl(21, 51, 75),
+    green = hsl(152, 45, 60),
+    blue0 = hsl(194, 29, 61),
+    blue1 = hsl(201, 53, 82),
+    blue2 = hsl(214, 62, 69),
 }
+
+colors.light    = {
+    shade0 = hsl(0, 0, 100),
+    shade1 = hsl(0, 0, 97),
+    shade2 = hsl(0, 0, 91),
+    shade3 = hsl(0, 0, 87),
+    shade4 = hsl(0, 0, 50),
+    shade5 = hsl(0, 0, 50),
+    shade6 = hsl(0, 0, 43),
+    shade7 = hsl(0, 0, 25),
+    shade8 = hsl(0, 0, 5),
+    shade9 = hsl(0, 0, 0),
+
+    red = "",
+    pink0 = "",
+    pink1 = "",
+    yellow0 = "",
+    green = "",
+    blue0 = "",
+    blue1 = "",
+    blue2 = "",
+}
+
+---@class MontesquieuColor
+local hl_groups = function(c)
+    return {
+        shade0 = c.shade0,
+        shade1 = c.shade1,
+        shade2 = c.shade2,
+        shade3 = c.shade3,
+        shade4 = c.shade4,
+        shade5 = c.shade5,
+        shade6 = c.shade6,
+        shade7 = c.shade7,
+        shade8 = c.shade8,
+        shade9 = c.shade9,
+
+        tokens = {
+            builtin = c.pink0,
+            comment = c.shade5,
+            func = c.pink2,
+            keyword = c.blue2,
+            id = c.shade3,
+            number = c.shade9,
+            property = c.blue1,
+            operator = c.shade8,
+            string = c.blue0,
+            type = c.yellow0
+        },
+    }
+end
+
+
+-- local hl = {
+--     light = {
+--         bg = hsl(0, 0, 100),
+--         bg_float = hsl(0, 0, 97),
+--         bg_focused = "NONE",
+--         fg = hsl(0, 0, 5),
+--         fg_unfocused = hsl(0, 0, 50),
+--         fg_focused = hsl(0, 0, 0),
+--         cursor_line = "NONE",
+--         separator = hsl(0, 0, 96),
+--
+--         -- Light
+--         -- shade100 = hsl(0, 0, 100),
+--         -- shade200 = hsl(0, 0, 96),
+--         -- shade300 = hsl(0, 0, 73),
+--         -- shade400 = hsl(0, 0, 62),
+--         -- shade500 = hsl(0, 0, 50),
+--         -- shade600 = hsl(0, 0, 43),
+--         -- shade700 = hsl(0, 0, 25),
+--         -- shade800 = hsl(0, 0, 5),
+--         -- shade900 = hsl(0, 0, 0),
+--
+--         tokens = {
+--             -- identifier = "NONE",
+--             -- constant = "NONE",
+--             comment = hsl(0, 0, 43),
+--             keyword = hsl(233, 49, 71),
+--             func = hsl(330, 55, 71),
+--             number = hsl(0, 0, 25),
+--             string = hsl(194, 29, 51),
+--             -- type = hsl_to_hex(21, 51, 75),
+--             operator = "gray",
+--             non_text = hsl(0, 0, 86)
+--         }
+--     },
+-- }
 
 
 local function set_dark_hl()
-    local c = colors["dark"]
+    local theme = "dark"
+    -- local c = hl[theme]
+    local c2 = hl_groups(colors[theme])
 
-    vim.api.nvim_set_hl(0, "Normal", { fg = c.fg, bg = c.bg })          -- Normal text.
-    vim.api.nvim_set_hl(0, "NormalFloat", { bg = c.bg_float })          -- Normal text in floating windows.
-    vim.api.nvim_set_hl(0, "FloatBorder", { fg = "NONE", bg = "NONE" }) -- Border of floating windows.
+
+    vim.api.nvim_set_hl(0, "Normal", { fg = c2.shade9, bg = c2.shade0 }) -- Normal text.
+    vim.api.nvim_set_hl(0, "NormalFloat", { bg = c2.shade2 })            -- Normal text in floating windows.
+    vim.api.nvim_set_hl(0, "FloatBorder", { fg = "NONE", bg = "NONE" })  -- Border of floating windows.
     -- FloatTitle	Title of floating windows. *hl-FloatTitle*
     -- NormalNC	Normal text in non-current windows. *hl-NormalNC*
-    vim.api.nvim_set_hl(0, "Pmenu", { bg = c.bg_float, fg = "gray" })            -- Popup menu: Normal item.
-    vim.api.nvim_set_hl(0, "PmenuSel", { bg = c.bg_focused, fg = c.fg_focused }) -- Popup menu: Selected item.
+    vim.api.nvim_set_hl(0, "Pmenu", { bg = c2.shade2, fg = c2.shade5 })    -- Popup menu: Normal item.
+    vim.api.nvim_set_hl(0, "PmenuSel", { bg = c2.shade4, fg = c2.shade9 }) -- Popup menu: Selected item.
     -- PmenuKind	Popup menu: Normal item "kind". *hl-PmenuKind*
     -- PmenuKindSel	Popup menu: Selected item "kind". *hl-PmenuKindSel*
     -- PmenuExtra	Popup menu: Normal item "extra text". *hl-PmenuExtra*
     -- PmenuExtraSel	Popup menu: Selected item "extra text". *hl-PmenuExtraSel*
-    vim.api.nvim_set_hl(0, "PmenuSbar", { bg = c.bg_float }) -- Popup menu: Scrollbar.
-    vim.api.nvim_set_hl(0, "PmenuThumb", { bg = "gray" })    -- Popup menu: Thumb of the scrollbar. *hl-PmenuThumb*
+    vim.api.nvim_set_hl(0, "PmenuSbar", { bg = c2.shade2 }) -- Popup menu: Scrollbar.
+    vim.api.nvim_set_hl(0, "PmenuThumb", { bg = c2.blue1 }) -- Popup menu: Thumb of the scrollbar. *hl-PmenuThumb*
     -- Question	|hit-enter| prompt and yes/no questions.
     -- QuickFixLine	Current |quickfix| item in the quickfix window. Combined with |hl-CursorLine| when the cursor is there.
     -- Search		Last search pattern highlighting (see 'hlsearch'). Also used for similar items that need to stand out.
@@ -223,7 +294,7 @@ local function set_dark_hl()
     -- TabLine		Tab pages line, not active tab page label.
     -- TabLineFill	Tab pages line, where there are no labels.
     -- TabLineSel	Tab pages line, active tab page label.
-    vim.api.nvim_set_hl(0, "Title", { fg = "white" }) -- Titles for output from ":set all", ":autocmd" etc.
+    vim.api.nvim_set_hl(0, "Title", { fg = c2.shade9 }) -- Titles for output from ":set all", ":autocmd" etc.
     -- Visual		Visual mode selection.
     -- VisualNOS	Visual mode selection when vim is "Not Owning the Selection".
     -- WarningMsg	Warning messages.
@@ -342,39 +413,39 @@ local function set_dark_hl()
 
 
     -- *Comment
-    vim.api.nvim_set_hl(0, "Comment", { fg = c.tokens.comment })         -- any comment
+    vim.api.nvim_set_hl(0, "Comment", { fg = c2.tokens.comment })       -- any comment
     -- *Constant
-    vim.api.nvim_set_hl(0, "Constant", { fg = hsl_to_hex(330, 46, 66) }) -- any constants
+    vim.api.nvim_set_hl(0, "Constant", { fg = hsl(330, 46, 66) })       -- any constants
     -- vim.api.nvim_set_hl(0, "Character", { fg = hsl_to_hex(330, 46, 66) }) --  Character	a character constant: 'c', '\n'
-    vim.api.nvim_set_hl(0, "String", { fg = c.tokens.string })           -- a string constant: "this is a string"
-    vim.api.nvim_set_hl(0, "Number", { fg = c.tokens.number })           -- a number constant: 234, 0xff
-    vim.api.nvim_set_hl(0, "Boolean", { link = "Keyword" })              -- a boolean constant: TRUE, false
-    vim.api.nvim_set_hl(0, "Float", { link = "Number" })                 -- a floating point constant: 2.3e10
+    vim.api.nvim_set_hl(0, "String", { fg = c2.tokens.string })         -- a string constant: "this is a string"
+    vim.api.nvim_set_hl(0, "Number", { fg = c2.tokens.number })         -- a number constant: 234, 0xff
+    vim.api.nvim_set_hl(0, "Boolean", { link = "Keyword" })             -- a boolean constant: TRUE, false
+    vim.api.nvim_set_hl(0, "Float", { link = "Number" })                -- a floating point constant: 2.3e10
     -- *Identifier
-    vim.api.nvim_set_hl(0, "Identifier", { fg = c.tokens.identifier })   -- any variable name
-    vim.api.nvim_set_hl(0, "Function", { fg = c.tokens.func })           -- function name (also: methods for classes)
-    vim.api.nvim_set_hl(0, "Statement", { link = "Keyword" })            -- any statement
-    vim.api.nvim_set_hl(0, "Conditional", { link = "Keyword" })          -- if, then, else, endif, switch, etc.
-    vim.api.nvim_set_hl(0, "Repeat", { link = "Keyword" })               -- for, do, while, etc.
-    vim.api.nvim_set_hl(0, "Label", { link = "Keyword" })                --  case, default, etc.
-    vim.api.nvim_set_hl(0, "Operator", { fg = "#ffffff" })               -- "sizeof", "+", "*", etc.
-    vim.api.nvim_set_hl(0, "Keyword", { fg = c.tokens.keyword })         --  any other keyword
-    vim.api.nvim_set_hl(0, "Exception", { link = "Keyword" })            --  Exception	try, catch, throw
+    vim.api.nvim_set_hl(0, "Identifier", { fg = c2.tokens.identifier }) -- any variable name
+    vim.api.nvim_set_hl(0, "Function", { fg = c2.tokens.func })         -- function name (also: methods for classes)
+    vim.api.nvim_set_hl(0, "Statement", { link = "Keyword" })           -- any statement
+    vim.api.nvim_set_hl(0, "Conditional", { link = "Keyword" })         -- if, then, else, endif, switch, etc.
+    vim.api.nvim_set_hl(0, "Repeat", { link = "Keyword" })              -- for, do, while, etc.
+    vim.api.nvim_set_hl(0, "Label", { link = "Keyword" })               --  case, default, etc.
+    vim.api.nvim_set_hl(0, "Operator", { fg = c2.tokens.operator })     -- "sizeof", "+", "*", etc.
+    vim.api.nvim_set_hl(0, "Keyword", { fg = c2.tokens.keyword })       --  any other keyword
+    vim.api.nvim_set_hl(0, "Exception", { link = "Keyword" })           --  Exception	try, catch, throw
     -- *PreProc
-    vim.api.nvim_set_hl(0, "PreProc", { link = "Keyword" })              -- generic Preprocessor
+    vim.api.nvim_set_hl(0, "PreProc", { link = "Keyword" })             -- generic Preprocessor
     --  Include	preprocessor #include
     --  Define		preprocessor #define
     --  Macro		same as Define
     --  PreCondit	preprocessor #if, #else, #endif, etc.
 
     -- *Type
-    vim.api.nvim_set_hl(0, "Type", { fg = c.tokens.type }) -- int, long, char, etc.
+    vim.api.nvim_set_hl(0, "Type", { fg = c2.tokens.type }) -- int, long, char, etc.
     --  StorageClass	static, register, volatile, etc.
     --  Structure	struct, union, enum, etc.
     --  Typedef	A typedef
 
     -- *Special	
-    vim.api.nvim_set_hl(0, "Special", { fg = hsl_to_hex(0, 0, 100) }) -- any special symbol
+    vim.api.nvim_set_hl(0, "Special", { fg = hsl(0, 0, 100) }) -- any special symbol
     --  SpecialChar	special character in a constant
     --  Tag		you can use CTRL-] on this
     --  Delimiter	character that needs attention
@@ -390,18 +461,17 @@ local function set_dark_hl()
     -- *Todo		anything that needs extra attention; mostly the keywords TODO FIXME and XXX
 
 
-    --- Languages spec
+    --- Languages spec without Treesitter
     vim.api.nvim_set_hl(0, "htmlTag", { link = "Comment" })
     vim.api.nvim_set_hl(0, "htmlEndTag", { link = "htmlTag" })
-    vim.api.nvim_set_hl(0, "luaFunc", { fg = hsl_to_hex(330, 46, 66) })
-
-    vim.api.nvim_set_hl(0, "nixSimpleBuiltin", { fg = hsl_to_hex(330, 46, 66) })
+    vim.api.nvim_set_hl(0, "luaFunc", { fg = c2.tokens.builtin })
+    vim.api.nvim_set_hl(0, "nixSimpleBuiltin", { fg = c2.tokens.builtin })
     --- Treesitter
-    vim.api.nvim_set_hl(0, "@keyword.import", { fg = hsl_to_hex(330, 46, 66) })
-    vim.api.nvim_set_hl(0, "@variable.member", { fg = c.tokens.property })
-    vim.api.nvim_set_hl(0, "@punctuation.delimiter", { fg = hsl_to_hex(0, 0, 60) })
-    vim.api.nvim_set_hl(0, "@punctuation.bracket", { fg = hsl_to_hex(0, 0, 75) })
-    vim.api.nvim_set_hl(0, "@function.builtin", { fg = hsl_to_hex(330, 45, 65) })
+    vim.api.nvim_set_hl(0, "@keyword.import", { fg = c2.tokens.builtin })
+    vim.api.nvim_set_hl(0, "@variable.member", { fg = c2.tokens.property })
+    vim.api.nvim_set_hl(0, "@punctuation.delimiter", { fg = c2.shade6 })
+    vim.api.nvim_set_hl(0, "@punctuation.bracket", { fg = c2.shade7 })
+    vim.api.nvim_set_hl(0, "@function.builtin", { fg = c2.tokens.builtin })
 
     --- Editor
     -- ColorColumn	Used for the columns set with 'colorcolumn'. *hl-ColorColumn*
@@ -412,65 +482,57 @@ local function set_dark_hl()
     -- CursorIM	Like Cursor, but used when in IME mode. *CursorIM* *hl-CursorIM*
     -- CursorColumn	Screen-column at the cursor, when 'cursorcolumn' is set. *hl-CursorColumn*
     -- Screen-line at the cursor, when 'cursorline' is set. Low-priority if foreground (ctermfg OR guifg) is not set. *hl-CursorLine*
-    vim.api.nvim_set_hl(0, "CursorLine", { bg = c.cursor_line })
-
-    --
+    vim.api.nvim_set_hl(0, "CursorLine", { bg = c2.shade1 })
     -- Directory	Directory names (and other special names in listings). *hl-Directory*
     -- DiffAdd		Diff mode: Added line. |diff.txt| *hl-DiffAdd*
     -- DiffChange	Diff mode: Changed line. |diff.txt| *hl-DiffChange*
     -- DiffDelete	Diff mode: Deleted line. |diff.txt| *hl-DiffDelete*
     -- DiffText	Diff mode: Changed text within a changed line. |diff.txt| *hl-DiffText*
-    -- Filler lines (~) after the end of the buffer. By default, this is highlighted like |hl-NonText|. *hl-EndOfBuffer*
-    vim.api.nvim_set_hl(0, "EndOfBuffer", { fg = c.bg })
+    vim.api.nvim_set_hl(0, "EndOfBuffer", { fg = c2.shade0 }) -- Filler lines (~) after the end of the buffer. By default, this is highlighted like |hl-NonText|.
     -- TermCursor	Cursor in a focused terminal. *hl-TermCursor*
     -- TermCursorNC	Cursor in an unfocused terminal. *hl-TermCursorNC*
     -- ErrorMsg	Error messages on the command line. *hl-ErrorMsg*
-    -- Separators between window splits. *hl-WinSeparator*
-    vim.api.nvim_set_hl(0, "WinSeparator", { fg = c.separator })
+    vim.api.nvim_set_hl(0, "WinSeparator", { fg = c2.shade3 }) -- Separators between window splits.
     -- Folded		Line used for closed folds. *hl-Folded*
     -- FoldColumn	'foldcolumn' *hl-FoldColumn*
-    -- Column where |signs| are displayed. *hl-SignColumn*
-    vim.api.nvim_set_hl(0, "SignColumn", { link = "Normal" })
+    vim.api.nvim_set_hl(0, "SignColumn", { link = "Normal" }) -- Column where |signs| are displayed.
     -- IncSearch	'incsearch' highlighting; also used for the text replaced with ":s///c". *hl-IncSearch*
     -- Substitute	|:substitute| replacement text highlighting. *hl-Substitute*
-    -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set. *hl-LineNr*
-    vim.api.nvim_set_hl(0, "LineNr", { bg = c.bg, fg = c.fg_unfocused })
+    vim.api.nvim_set_hl(0, "LineNr", { bg = c2.shade0, fg = c2.shade4 }) -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
     -- LineNrAbove	Line number for when the 'relativenumber' option is set, above the cursor line. *hl-LineNrAbove*
     -- LineNrBelow	Line number for when the 'relativenumber' option is set, below the cursor line. *hl-LineNrBelow*
     -- Like LineNr when 'cursorline' is set and 'cursorlineopt' contains "number" or is "both", for the cursor line. *hl-CursorLineNr*
-    vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "white" })
+    vim.api.nvim_set_hl(0, "CursorLineNr", { fg = c2.shade9 })
     -- CursorLineFold	Like FoldColumn when 'cursorline' is set for the cursor line. *hl-CursorLineFold*
-    -- Like SignColumn when 'cursorline' is set for the cursor line. *hl-CursorLineSign*
-    vim.api.nvim_set_hl(0, "CursorLineSign", { link = "SignColumn" })
+    vim.api.nvim_set_hl(0, "CursorLineSign", { link = "SignColumn" }) -- Like SignColumn when 'cursorline' is set for the cursor line.
     -- MatchParen	Character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt| *hl-MatchParen*
     -- ModeMsg		'showmode' message (e.g., "-- INSERT --"). *hl-ModeMsg*
     -- MsgArea		Area for messages and cmdline. *hl-MsgArea*
     -- MsgSeparator	Separator for scrolled messages |msgsep|. *hl-MsgSeparator*
     -- MoreMsg		|more-prompt| *hl-MoreMsg*
-    -- '@' at the end of the window, characters from 'showbreak' and other characters that do not really exist in the text (e.g., ">" displayed when a double-wide character doesn't fit at the end of the line). See also |hl-EndOfBuffer|. *hl-NonText*
-    vim.api.nvim_set_hl(0, "NonText", { fg = hsl_to_hex(0, 0, 25) })
+    vim.api.nvim_set_hl(0, "NonText", { fg = c2.shade3 }) -- '@' at the end of the window, characters from 'showbreak' and other characters that do not really exist in the text (e.g., ">" displayed when a double-wide character doesn't fit at the end of the line). See also |hl-EndOfBuffer|.
 end
 
-local function set_light_hl()
-    local c = colors["light"]
-
-    -- Normal text. *hl-Normal*
-    vim.api.nvim_set_hl(0, "Normal", { bg = c.bg400 })
-    -- Normal text in floating windows. *hl-NormalFloat*
-    vim.api.nvim_set_hl(0, "NormalFloat", { bg = c.float })
-    -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
-    vim.api.nvim_set_hl(0, "LineNr", { bg = "#feffff" })
-    vim.api.nvim_set_hl(0, "Pmenu", { bg = hsl_to_hex(120, 0, 95), fg = c.fg_unfocused })
-
-    vim.api.nvim_set_hl(0, "Keyword", { fg = "#493a8a" })
-    vim.api.nvim_set_hl(0, "Statement", { fg = "#493a8a" })
-    vim.api.nvim_set_hl(0, "String", { fg = "#2f3f83" })
-    vim.api.nvim_set_hl(0, "Number", { fg = hsl_to_hex(333, 73, 64) })
-    vim.api.nvim_set_hl(0, "Boolean", { fg = hsl_to_hex(214, 74, 72) })
-    vim.api.nvim_set_hl(0, "Float", { link = "Number" })
-    vim.api.nvim_set_hl(0, "Special", { fg = "#cf7fa7" })
-    vim.api.nvim_set_hl(0, "Comment", { fg = c.fg200 })
-end
+-- local function set_light_hl()
+--     local c = hl["light"]
+--
+--     -- Normal text. *hl-Normal*
+--     vim.api.nvim_set_hl(0, "Normal", { bg = c.bg400 })
+--     -- Normal text in floating windows. *hl-NormalFloat*
+--     vim.api.nvim_set_hl(0, "NormalFloat", { bg = c.float })
+--     -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
+--     vim.api.nvim_set_hl(0, "LineNr", { bg = "#feffff" })
+--     vim.api.nvim_set_hl(0, "Pmenu", { bg = hsl(120, 0, 95), fg = c.fg_unfocused })
+--
+--     vim.api.nvim_set_hl(0, "Keyword", { fg = "#493a8a" })
+--     vim.api.nvim_set_hl(0, "Statement", { fg = "#493a8a" })
+--     vim.api.nvim_set_hl(0, "String", { fg = "#2f3f83" })
+--     vim.api.nvim_set_hl(0, "Number", { fg = hsl(333, 73, 64) })
+--     vim.api.nvim_set_hl(0, "Boolean", { fg = hsl(214, 74, 72) })
+--     vim.api.nvim_set_hl(0, "Float", { link = "Number" })
+--     vim.api.nvim_set_hl(0, "Special", { fg = "#cf7fa7" })
+--     vim.api.nvim_set_hl(0, "Comment", { fg = c.fg200 })
+-- end
 
 require "trouble".setup()
 set_dark_hl()
