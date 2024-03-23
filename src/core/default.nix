@@ -68,12 +68,13 @@ let
     dashboard-nvim
     persistence-nvim
 
-    (nvim-treesitter.withPlugins (p: [
-      p.comment
-      p.query
-      p.vim
-      p.xml
-    ]))
+    nvim-treesitter.withAllGrammars
+    #(nvim-treesitter.withPlugins (p: [
+    #  p.comment
+    #  p.query
+    #  p.vim
+    #  p.xml
+    #]))
     playground
     nvim-treesitter-textobjects
     nvim-treesitter-context
