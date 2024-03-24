@@ -104,7 +104,7 @@ colors.dark     = {
     cyan          = "",
     cyan_light    = "",
     blue          = hsl(250, 44, 75),
-    blue_light    = "",
+    blue_light    = hsl(250, 44, 45),
     magenta       = hsl(250, 44, 64),
     magenta_light = hsl(250, 44, 75),
 
@@ -174,7 +174,6 @@ local hl_groups = function(c)
         type          = c.type
     }
 end
-
 
 local function set_dark_hl(theme)
     theme = theme or "dark"
@@ -320,7 +319,7 @@ local function set_dark_hl(theme)
 
     --- Editor
     -- ColorColumn	Used for the columns set with 'colorcolumn'.
-    vim.api.nvim_set_hl(0, "Conceal", { bg = c.blue_light }) -- Placeholder characters substituted for concealed text (see 'conceallevel')
+    vim.api.nvim_set_hl(0, "Conceal", { bg = c.cyan }) -- Placeholder characters substituted for concealed text (see 'conceallevel')
     -- CurSearch	Used for highlighting a search pattern under the cursor (see 'hlsearch')
     -- Cursor		Character under the cursor.
     -- lCursor		Character under the cursor when |language-mapping| is used (see 'guicursor'). *hl-lCursor*
@@ -329,7 +328,7 @@ local function set_dark_hl(theme)
     -- Screen-line at the cursor, when 'cursorline' is set. Low-priority if foreground (ctermfg OR guifg) is not set. *hl-CursorLine*
     vim.api.nvim_set_hl(0, "CursorLine", { bg = c.shade1 })
     -- Directory	Directory names (and other special names in listings).
-    vim.api.nvim_set_hl(0, "DiffAdd", { fg = c.success })     -- Diff mode: Added line. |diff.txt|
+    vim.api.nvim_set_hl(0, "DiffAdd", { fg = c.success })    -- Diff mode: Added line. |diff.txt|
     -- DiffChange	Diff mode: Changed line. |diff.txt|
     vim.api.nvim_set_hl(0, "DiffDelete", { fg = c.danger })  -- Diff mode: Deleted line. |diff.txt|
     -- DiffText	Diff mode: Changed text within a changed line. |diff.txt|
@@ -381,7 +380,6 @@ local function set_dark_hl(theme)
     --  Define		preprocessor #define
     --  Macro		same as Define
     --  PreCondit	preprocessor #if, #else, #endif, etc.
-
     -- *Type
     vim.api.nvim_set_hl(0, "Type", { fg = c.type }) -- int, long, char, etc.
     --  StorageClass	static, register, volatile, etc.
