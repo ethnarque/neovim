@@ -73,7 +73,7 @@ local base16_night = {
     "",               -- green
     "",               -- yellow
     hsl(214, 61, 69), -- blue
-    hsl(250, 44, 64), -- magenta
+    hsl(245, 36, 68), -- magenta
     hsl(194, 37, 61), -- cyan
     "",               -- white
     "",               -- black bright
