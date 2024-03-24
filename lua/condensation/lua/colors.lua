@@ -38,18 +38,33 @@ M.night = {}
 M.day = {}
 
 M.night.shade = {
-    "#111111", -- 1 - | bg
-    "#191919", -- 2 - | Cursor line
-    "#222222", -- 3 - | Menu and Visual
-    "#2a2a2a", -- 4 - | winSeparator and list chars
-    "#313131", -- 5 - Active / Selected UI element background
-    "#3a3a3a", -- 6 - | Selected list background
-    "#484848", -- 7 - | Comments
-    "#606060", -- 8 - | Selected list text
-    "#6e6e6e", -- 9 - Solid backgrounds
-    "#7b7b7b", -- 10 - | Brackets and delimiters
-    "#b4b4b4", -- 11 - | + Operators
-    "#eeeeee", -- 12 - High-constrast text
+    hsl(0, 1, 10), -- 1 - | bg
+    hsl(0, 1, 10), -- 2 - | Cursor line
+    hsl(0, 1, 13), -- 3 - | Menu and Visual
+    hsl(0, 1, 16), -- 4 - | winSeparator and list chars
+    hsl(0, 1, 19), -- 5 - Active / Selected UI element background
+    hsl(0, 1, 23), -- 6 - | Selected list background
+    hsl(0, 1, 28), -- 7 - | Comments
+    hsl(0, 1, 38), -- 8 - | Selected list text
+    hsl(0, 1, 43), -- 9 - Solid backgrounds
+    hsl(0, 1, 48), -- 10 - | Brackets and delimiters
+    hsl(0, 1, 71), -- 11 - | + Operators
+    hsl(0, 1, 93), -- 12 - High-constrast text
+}
+
+M.day.shade = {
+    hsl(30, 10, 96), -- 1 - | bg
+    hsl(30, 10, 92), -- 2 - | Cursor line
+    hsl(30, 10, 90), -- 3 - | Menu and Visual
+    hsl(0, 0, 88),   -- 4 - | winSeparator and list chars
+    hsl(0, 0, 88),   -- 5 - Active / Selected UI element background
+    hsl(0, 0, 85),   -- 6 - | Selected list background
+    hsl(0, 0, 73),   -- 7 - | Comments
+    hsl(0, 0, 64),   -- 8 - | Menu item text + statusbar
+    hsl(0, 0, 55),   -- 9 - Solid backgrounds
+    hsl(0, 0, 51),   -- 10 - | Brackets and delimiters
+    hsl(0, 0, 39),   -- 11 - | Low constrast text + Operators
+    hsl(0, 0, 13),   -- 12 - | High-constrast text - Titles, constants
 }
 
 local base16_night = {
@@ -203,7 +218,7 @@ local groups = {
     ["luaTable"]               = { link = "Delimiter" },
     -- Treesitter
     ["@constructor"]           = { link = "Identifier" },
-    -- ["@punctuation.bracket"] = { link = "Delimiter" },
+    ["@punctuation.bracket"]   = { link = "Delimiter" },
     ["@punctuation.delimiter"] = { link = "Delimiter" },
     ["@variable.member"]       = { fg = gs[10] },
 
@@ -213,23 +228,6 @@ local groups = {
 for group, spec in pairs(groups) do
     vim.api.nvim_set_hl(0, group, spec)
 end
-
-
-
-M.day.shade = {
-    shade1 = "",
-    shade2 = "",
-    shade3 = "",
-    shade4 = "",
-    shade5 = "",
-    shade6 = "",
-    shade7 = "",
-    shade8 = "",
-    shade9 = "",
-    shade10 = "",
-    shade11 = "",
-    shade12 = "",
-}
 
 
 
