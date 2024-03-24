@@ -38,18 +38,18 @@ M.night = {}
 M.day = {}
 
 M.night.shade = {
-    hsl(0, 1, 10), -- 1 - | bg
-    hsl(0, 1, 10), -- 2 - | Cursor line
-    hsl(0, 1, 13), -- 3 - | Menu and Visual
-    hsl(0, 1, 16), -- 4 - | winSeparator and list chars
-    hsl(0, 1, 19), -- 5 - Active / Selected UI element background
-    hsl(0, 1, 23), -- 6 - | Selected list background
-    hsl(0, 1, 28), -- 7 - | Comments
-    hsl(0, 1, 38), -- 8 - | Selected list text
-    hsl(0, 1, 43), -- 9 - Solid backgrounds
-    hsl(0, 1, 48), -- 10 - | Brackets and delimiters
-    hsl(0, 1, 71), -- 11 - | + Operators
-    hsl(0, 1, 93), -- 12 - High-constrast text
+    hsl(0, 1, 10), -- 01 - | App background
+    hsl(0, 1, 10), -- 02 - | Cursor line
+    hsl(0, 1, 13), -- 03 - | Menu and Visual
+    hsl(0, 1, 16), -- 04 - | winSeparator and list chars
+    hsl(0, 1, 19), -- 05 - Active / Selected UI element background
+    hsl(0, 1, 23), -- 06 - | Selected list background
+    hsl(0, 1, 28), -- 07 - | Comments
+    hsl(0, 1, 38), -- 08 - | Selected list text
+    hsl(0, 1, 43), -- 09 - | Brackets and delimiters
+    hsl(0, 1, 63), -- 10 - | Properties
+    hsl(0, 1, 71), -- 11 - | Low-constrast text, operators
+    hsl(0, 1, 93), -- 12 - | High-constrast text
 }
 
 M.day.shade = {
