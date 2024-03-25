@@ -17,7 +17,7 @@ let
     src = ./.;
     installPhase = ''
       mkdir -p $out
-      cd -r ./* $out
+      cp -r ./* $out
     '';
   };
 
