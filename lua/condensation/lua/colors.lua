@@ -67,6 +67,26 @@ M.day.shade = {
     hsl(0, 0, 13),   -- 12 - | High-constrast text - Titles, constants
 }
 
+local base16_day = {
+    "",               -- black
+    "",               -- red
+    "",               -- green
+    "",               -- yellow
+    hsl(214, 61, 69), -- blue
+    -- hsl(251, 44, 45), -- magenta
+    "red",
+    hsl(194, 37, 61), -- cyan
+    "",               -- white
+    "",               -- black bright
+    "",               -- red bright
+    "",               -- green bright
+    "",               -- yellow bright
+    "",               -- blue bright
+    hsl(250, 44, 75), -- magenta bright
+    "",               -- cyan bright
+    "",               -- white bright
+}
+
 local base16_night = {
     "",               -- black
     "",               -- red
@@ -203,7 +223,7 @@ local groups = {
     ["StorageClass"]           = { link = "Keyword" }, -- static, register, volatile, etc.
     --  Structure	struct, union, enum, etc.
     --  Typedef	A typedef
-    ["Special"]                = {},                                  -- * any special symbol
+    ["Special"]                = { fg = cs[6] },                      -- * any special symbol
     --  SpecialChar	special character in a constant
     ["Tag"]                    = {},                                  -- you can use CTRL-] on this
     ["Delimiter"]              = { fg = gs[10] },                     -- character that needs attention
@@ -217,6 +237,9 @@ local groups = {
     ["luaFunc"]                = { link = "Function" },
     ["luaTable"]               = { link = "Delimiter" },
     -- Treesitter
+    ["@comment.todo"]          = { link = "Todo" },
+    ["@comment.error"]         = { link = "Error" },
+    ["@comment.note"]          = { link = "Todo" },
     ["@constructor"]           = { link = "Identifier" },
     ["@punctuation.bracket"]   = { link = "Delimiter" },
     ["@punctuation.delimiter"] = { link = "Delimiter" },
