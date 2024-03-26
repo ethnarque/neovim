@@ -46,9 +46,9 @@ M.night.shade = {
     hsl(0, 1, 23), -- 06 - | Selected list background
     hsl(0, 1, 28), -- 07 - | Comments
     hsl(0, 1, 38), -- 08 - | Selected list text
-    hsl(0, 1, 43), -- 09 - | Brackets and delimiters
+    hsl(0, 1, 55), -- 09 - | Keywords, brackets & delimiters
     hsl(0, 1, 63), -- 10 - | Properties
-    hsl(0, 1, 71), -- 11 - | Low-constrast text, operators
+    hsl(0, 1, 76), -- 11 - | Low-constrast text, operators
     hsl(0, 1, 93), -- 12 - | High-constrast text
 }
 
@@ -88,22 +88,29 @@ local base16_day = {
 }
 
 local base16_night = {
-    "",               -- black
-    "",               -- red
-    "",               -- green
-    "",               -- yellow
-    hsl(214, 61, 69), -- blue
-    hsl(245, 36, 68), -- magenta
-    hsl(194, 37, 61), -- cyan
-    "",               -- white
-    "",               -- black bright
-    "",               -- red bright
-    "",               -- green bright
-    "",               -- yellow bright
-    "",               -- blue bright
-    hsl(250, 44, 75), -- magenta bright
-    "",               -- cyan bright
-    "",               -- white bright
+    "",               -- 01 black
+    "#f45e7d",        -- 02 red
+    "#7EBC92",        -- 03 green
+    "#EE9A69",        -- 04 yellow
+    hsl(214, 61, 69), -- 05 blue
+    hsl(245, 36, 68), -- 06 magenta
+    hsl(194, 37, 61), -- 07 cyan
+    "",               -- 08 white
+    "",               -- 09 black bright
+    "",               -- 10 red bright
+    "",               -- 11 green bright
+    "#E5B57F",        -- 12 yellow bright
+    "#B8CCF5",        -- 13 blue bright
+    -- hsl(250, 44, 75), -- 14 magenta bright
+    hsl(279, 32, 77), -- 14 magenta bright
+    "",               -- 15 cyan bright
+    "",               -- 16 white bright
+}
+
+local tokens = {}
+
+tokens.night = {
+    func = base16_day[14]
 }
 
 local function make_scale(shades)
@@ -118,6 +125,7 @@ end
 
 local gs = make_scale(M.night.shade)
 local cs = base16_night
+local t = tokens.night
 
 local groups = {
     ["Normal"]                 = { bg = gs[1], fg = gs[11] }, -- Normal text.
@@ -146,11 +154,11 @@ local groups = {
     -- TabLine		Tab pages line, not active tab page label.
     -- TabLineFill	Tab pages line, where there are no labels.
     -- TabLineSel	Tab pages line, active tab page label.
-    ["Title"]                  = { fg = gs[12] }, -- Titles for output from ":set all", ":autocmd" etc.
-    ["Visual"]                 = { bg = gs[3] },  -- Visual mode selection.
+    ["Title"]                  = { fg = gs[12] },    -- Titles for output from ":set all", ":autocmd" etc.
+    ["Visual"]                 = { bg = gs[3] },     -- Visual mode selection.
     -- VisualNOS	Visual mode selection when vim is "Not Owning the Selection".
-    -- WarningMsg	Warning messages.
-    ["Whitespace"]             = { fg = gs[4] }, -- "nbsp", "space", "tab", "multispace", "lead" and "trail" in 'listchars'.
+    ["WarningMsg"]             = { fg = "#FDDC99" }, --	Warning messages.
+    ["Whitespace"]             = { fg = gs[4] },     -- "nbsp", "space", "tab", "multispace", "lead" and "trail" in 'listchars'.
     -- ["WildMenu"] = {}, -- Current match in 'wildmenu' completion.
     -- ["WinBar"] = {}, -- Window bar of current window.
     -- ["WinBarNC"] = {}, -- Window bar of not-current windows.
@@ -168,11 +176,11 @@ local groups = {
     -- Screen-line at the cursor, when 'cursorline' is set. Low-priority if foreground (ctermfg OR guifg) is not set. *hl-CursorLine*
     ["CursorLine"]             = { bg = gs[2] },
     -- Directory	Directory names (and other special names in listings).
-    ["DiffAdd"]                = { fg = "green" },  -- Diff mode: Added line. |diff.txt|
-    ["DiffChange"]             = { fg = "orange" }, -- Diff mode: Changed line. |diff.txt|
-    ["DiffDelete"]             = { fg = "red" },    -- Diff mode: Deleted line. |diff.txt|
-    ["DiffText"]               = { fg = "violet" }, -- Diff mode: Changed text within a changed line. |diff.txt|
-    ["EndOfBuffer"]            = { fg = gs[1] },    -- Filler lines (~) after the end of the buffer. By default, this is highlighted like |hl-NonText|.
+    ["DiffAdd"]                = { fg = "green" },        -- Diff mode: Added line. |diff.txt|
+    ["DiffChange"]             = { link = "WarningMsg" }, -- Diff mode: Changed line. |diff.txt|
+    ["DiffDelete"]             = { link = "ErrorMsg" },   -- Diff mode: Deleted line. |diff.txt|
+    ["DiffText"]               = { fg = "violet" },       -- Diff mode: Changed text within a changed line. |diff.txt|
+    ["EndOfBuffer"]            = { fg = gs[1] },          -- Filler lines (~) after the end of the buffer. By default, this is highlighted like |hl-NonText|.
     -- TermCursor	Cursor in a focused terminal.
     -- TermCursorNC	Cursor in an unfocused terminal.
     ["ErrorMsg"]               = { fg = "red" }, -- Error messages on the command line.
@@ -201,18 +209,18 @@ local groups = {
     ["Comment"]                = { fg = gs[7], italic = true }, --* any comment
     ["Constant"]               = { fg = gs[12] },               -- * any constants
     ["Character"]              = { link = "Type" },             -- a character constant: 'c', '\n'
-    ["String"]                 = { fg = cs[7] },                -- a string constant: "this is a string"
-    ["Number"]                 = { fg = gs[11] },               -- a number constant: 234, 0xff
-    ["Boolean"]                = { link = "Keyword" },          -- a boolean constant: TRUE, false
+    ["String"]                 = { fg = cs[13] },               -- a string constant: "this is a string"
+    ["Number"]                 = { fg = cs[14] },               -- a number constant: 234, 0xff
+    ["Boolean"]                = { link = "Number" },           -- a boolean constant: TRUE, false
     ["Float"]                  = { link = "Number" },           -- a floating point constant: 2.3e10
     ["Identifier"]             = { fg = gs[11] },               -- * any variable name
-    ["Function"]               = { fg = cs[14] },               -- function name (also: methods for classes)
+    ["Function"]               = { fg = gs[12] },               -- function name (also: methods for classes)
     ["Statement"]              = { link = "Keyword" },          -- any statement
     ["Conditional"]            = { link = "Keyword" },          -- if, then, else, endif, switch, etc.
     ["Repeat"]                 = { link = "Keyword" },          -- for, do, while, etc.
     ["Label"]                  = { link = "Keyword" },          --  case, default, etc.
     ["Operator"]               = { fg = gs[10] },               -- "sizeof", "+", "*", etc.
-    ["Keyword"]                = { fg = cs[5] },                --  any other keyword
+    ["Keyword"]                = { fg = gs[9] },                --  any other keyword
     ["Exception"]              = { link = "Keyword" },          --  Exception	try, catch, throw
     ["PreProc"]                = { link = "Keyword" },          -- * generic Preprocessor
     ["Include"]                = { link = "Keyword" },          -- preprocessor #include
@@ -241,6 +249,7 @@ local groups = {
     ["@comment.error"]         = { link = "Error" },
     ["@comment.note"]          = { link = "Todo" },
     ["@constructor"]           = { link = "Identifier" },
+    ["@string.special.path"]   = { link = "String" },
     ["@punctuation.bracket"]   = { link = "Delimiter" },
     ["@punctuation.delimiter"] = { link = "Delimiter" },
     ["@variable.member"]       = { fg = gs[10] },
