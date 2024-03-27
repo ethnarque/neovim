@@ -37,81 +37,53 @@ end
 M.night = {}
 M.day = {}
 
+---@class ThemeShade
 M.night.shade = {
     hsl(0, 1, 10), -- 01 - | App background
-    hsl(0, 1, 10), -- 02 - | Cursor line
-    hsl(0, 1, 13), -- 03 - | Menu and Visual
-    hsl(0, 1, 16), -- 04 - | winSeparator and list chars
-    hsl(0, 1, 19), -- 05 - Active / Selected UI element background
-    hsl(0, 1, 23), -- 06 - | Selected list background
-    hsl(0, 1, 28), -- 07 - | Comments
-    hsl(0, 1, 38), -- 08 - | Selected list text
-    hsl(0, 1, 55), -- 09 - | Keywords, brackets & delimiters
-    hsl(0, 1, 63), -- 10 - | Properties
-    hsl(0, 1, 76), -- 11 - | Low-constrast text, operators
-    hsl(0, 1, 93), -- 12 - | High-constrast text
+    hsl(0, 1, 13), -- 02 - | Cursor line
+    hsl(0, 1, 16), -- 03 - | Menu and Visual
+    hsl(0, 1, 19), -- 04 - | WinSeparator | *listchars*
+    hsl(0, 1, 22), -- 05 - | StatusLine
+    hsl(0, 1, 26), -- 06 - | Selected list background
+    hsl(0, 1, 31), -- 07 - | Comments
+    hsl(0, 1, 41), -- 08 - | Selected list items
+    hsl(0, 1, 52), -- 09 - | Brackets
+    hsl(0, 1, 66), -- 10 - | Delimiters | Properties |
+    hsl(0, 1, 78), -- 11 - | Low-constrast text | Operators
+    hsl(0, 1, 86), -- 12 - | High-constrast text | Keywords
 }
 
 M.day.shade = {
-    hsl(30, 10, 96), -- 1 - | bg
-    hsl(30, 10, 92), -- 2 - | Cursor line
-    hsl(30, 10, 90), -- 3 - | Menu and Visual
-    hsl(0, 0, 88),   -- 4 - | winSeparator and list chars
-    hsl(0, 0, 88),   -- 5 - Active / Selected UI element background
-    hsl(0, 0, 85),   -- 6 - | Selected list background
-    hsl(0, 0, 73),   -- 7 - | Comments
-    hsl(0, 0, 64),   -- 8 - | Menu item text + statusbar
-    hsl(0, 0, 55),   -- 9 - Solid backgrounds
-    hsl(0, 0, 51),   -- 10 - | Brackets and delimiters
-    hsl(0, 0, 39),   -- 11 - | Low constrast text + Operators
-    hsl(0, 0, 13),   -- 12 - | High-constrast text - Titles, constants
-}
-
-local base16_day = {
-    "",               -- black
-    "",               -- red
-    "",               -- green
-    "",               -- yellow
-    hsl(214, 61, 69), -- blue
-    -- hsl(251, 44, 45), -- magenta
-    "red",
-    hsl(194, 37, 61), -- cyan
-    "",               -- white
-    "",               -- black bright
-    "",               -- red bright
-    "",               -- green bright
-    "",               -- yellow bright
-    "",               -- blue bright
-    hsl(250, 44, 75), -- magenta bright
-    "",               -- cyan bright
-    "",               -- white bright
-}
-
-local base16_night = {
-    "",               -- 01 black
-    "#f45e7d",        -- 02 red
-    "#7EBC92",        -- 03 green
-    "#EE9A69",        -- 04 yellow
-    hsl(214, 61, 69), -- 05 blue
-    hsl(245, 36, 68), -- 06 magenta
-    hsl(194, 37, 61), -- 07 cyan
-    "",               -- 08 white
-    "",               -- 09 black bright
-    "",               -- 10 red bright
-    "",               -- 11 green bright
-    "#E5B57F",        -- 12 yellow bright
-    "#B8CCF5",        -- 13 blue bright
-    -- hsl(250, 44, 75), -- 14 magenta bright
-    hsl(279, 32, 77), -- 14 magenta bright
-    "",               -- 15 cyan bright
-    "",               -- 16 white bright
+    hsl(30, 10, 99), --- 01 - | App background
+    hsl(30, 10, 95), --- 02 - | Cursor line
+    hsl(30, 10, 90), --- 03 - | Menu and Visual
+    hsl(0, 0, 88),   --- 04 - | WinSeparator | *listchars*
+    hsl(0, 0, 88),   --- 05 - | StatusLine
+    hsl(0, 0, 85),   --- 06 - | Selected list background
+    hsl(0, 0, 69),   --- 07 - | Comments
+    hsl(0, 0, 60),   --- 08 - | Selected list items
+    hsl(0, 0, 51),   --- 09 - | Brackets
+    hsl(0, 0, 37),   --- 10 - | Delimiters | Properties |
+    hsl(0, 0, 41),   --- 11 - | Low-constrast text | Operators
+    hsl(0, 0, 3),    --- 12 - | High-constrast text | Keywords
 }
 
 local tokens = {}
 
-tokens.night = {
-    func = base16_day[14]
+tokens.day = {
+    type = "#d6409f",
+    string = hsl(172, 100, 26),
+    func = hsl(208, 88, 43),
+    search = hsl(39, 100, 42),
 }
+
+tokens.night = {
+    type = hsl(267, 100, 81),  --
+    string = hsl(220, 75, 84), --
+    func = hsl(293, 100, 85),  --
+    search = hsl(32, 66, 70),  --
+}
+
 
 local function make_scale(shades)
     local temp = {}
@@ -124,8 +96,10 @@ local function make_scale(shades)
 end
 
 local gs = make_scale(M.night.shade)
-local cs = base16_night
 local t = tokens.night
+
+-- gs = make_scale(M.day.shade)
+-- t = tokens.day
 
 local groups = {
     ["Normal"]                 = { bg = gs[1], fg = gs[11] }, -- Normal text.
@@ -139,17 +113,17 @@ local groups = {
     -- PmenuKindSel	Popup menu: Selected item "kind".
     -- PmenuExtra	Popup menu: Normal item "extra text".
     -- PmenuExtraSel	Popup menu: Selected item "extra text".
-    ["PmenuSbar"]              = { bg = gs[3] },                 -- Popup menu: Scrollbar.
-    ["PmenuThumb"]             = { bg = gs[11] },                -- Popup menu: Thumb of the scrollbar.
-    ["Question"]               = { link = "String" },            --|hit-enter| prompt and yes/no questions.
-    ["QuickFixLine"]           = { link = "Search" },            -- Current |quickfix| item in the quickfix window. Combined with |hl-CursorLine| when the cursor is there.
-    ["Search"]                 = { fg = "orange", bold = true }, -- Last search pattern highlighting (see 'hlsearch'). Also used for similar items that need to stand out.
+    ["PmenuSbar"]              = { bg = gs[3] },                             -- Popup menu: Scrollbar.
+    ["PmenuThumb"]             = { bg = gs[11] },                            -- Popup menu: Thumb of the scrollbar.
+    ["Question"]               = { link = "String" },                        --|hit-enter| prompt and yes/no questions.
+    ["QuickFixLine"]           = { link = "Search" },                        -- Current |quickfix| item in the quickfix window. Combined with |hl-CursorLine| when the cursor is there.
+    ["Search"]                 = { bg = gs[2], fg = t.search, bold = true }, -- Last search pattern highlighting (see 'hlsearch'). Also used for similar items that need to stand out.
     -- SpecialKey	Unprintable characters: Text displayed differently from what it really is. But not 'listchars' whitespace. |hl-Whitespace|
     -- SpellBad	Word that is not recognized by the spellchecker. |spell| Combined with the highlighting used otherwise.
     -- SpellCap	Word that should start with a capital. |spell| Combined with the highlighting used otherwise.
     -- SpellLocal	Word that is recognized by the spellchecker as one that is used in another region. |spell| Combined with the highlighting used otherwise.
     -- SpellRare	Word that is recognized by the spellchecker as one that is hardly ever used. |spell| Combined with the highlighting used otherwise.
-    ["StatusLine"]             = { fg = gs[12], bg = gs[8] }, -- Status line of current window.
+    ["StatusLine"]             = { fg = gs[12], bg = gs[5] }, -- Status line of current window.
     -- StatusLineNC	Status lines of not-current windows. Note: If this is equal to "StatusLine", Vim will use "^^^" in the status line of the current window.
     -- TabLine		Tab pages line, not active tab page label.
     -- TabLineFill	Tab pages line, where there are no labels.
@@ -183,74 +157,75 @@ local groups = {
     ["EndOfBuffer"]            = { fg = gs[1] },          -- Filler lines (~) after the end of the buffer. By default, this is highlighted like |hl-NonText|.
     -- TermCursor	Cursor in a focused terminal.
     -- TermCursorNC	Cursor in an unfocused terminal.
-    ["ErrorMsg"]               = { fg = "red" }, -- Error messages on the command line.
-    ["WinSeparator"]           = { fg = gs[4] }, -- Separators between window splits.
+    ["ErrorMsg"]               = { fg = gs[10] }, -- Error messages on the command line.
+    ["WinSeparator"]           = { fg = gs[4] },  -- Separators between window splits.
     -- Folded		Line used for closed folds.
     -- FoldColumn	'foldcolumn'
-    ["SignColumn"]             = { link = "Normal" },        -- Column where |signs| are displayed.
-    ["IncSearch"]              = { fg = "orange" },          -- 'incsearch' highlighting; also used for the text replaced with ":s///c".
-    ["Substitute"]             = { fg = "red" },             -- |:substitute| replacement text highlighting.
-    ["LineNr"]                 = { bg = gs[1], fg = gs[7] }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
+    ["SignColumn"]             = { link = "Normal" },                            -- Column where |signs| are displayed.
+    ["IncSearch"]              = { bg = gs[4], fg = t.search, bold = true },     -- 'incsearch' highlighting; also used for the text replaced with ":s///c".
+    ["Substitute"]             = { link = "Search" },                            -- |:substitute| replacement text highlighting.
+    ["LineNr"]                 = { bg = gs[1], fg = gs[7] },                     -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
     -- Cmp
-    ["CmpItemAbbr"]            = { fg = gs[8] },             -- Popup menu: Normal item.
-    ["CmpItemKind"]            = { fg = gs[8] },             -- Popup menu: Normal item.
-    ["LineNrAbove"]            = { link = "LineNr" },        -- Line number for when the 'relativenumber' option is set, above the cursor line.
-    ["LineNrBelow"]            = { link = "LineNr" },        -- Line number for when the 'relativenumber' option is set, below the cursor line.
-    ["CursorLineNr"]           = { fg = gs[11] },            -- Like LineNr when 'cursorline' is set and 'cursorlineopt' contains "number" or is "both", for the cursor line.
+    ["CmpItemAbbr"]            = { fg = gs[8] },                                 -- Popup menu: Normal item.
+    ["CmpItemKind"]            = { fg = gs[8] },                                 -- Popup menu: Normal item.
+    ["LineNrAbove"]            = { link = "LineNr" },                            -- Line number for when the 'relativenumber' option is set, above the cursor line.
+    ["LineNrBelow"]            = { link = "LineNr" },                            -- Line number for when the 'relativenumber' option is set, below the cursor line.
+    ["CursorLineNr"]           = { fg = gs[11] },                                -- Like LineNr when 'cursorline' is set and 'cursorlineopt' contains "number" or is "both", for the cursor line.
     -- CursorLineFold	Like FoldColumn when 'cursorline' is set for the cursor line.
-    ["CursorLineSign"]         = { link = "SignColumn" },    -- Like SignColumn when 'cursorline' is set for the cursor line.
-    ["MatchParen"]             = { link = "Search" },        --	Character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
+    ["CursorLineSign"]         = { link = "SignColumn" },                        -- Like SignColumn when 'cursorline' is set for the cursor line.
+    ["MatchParen"]             = { fg = gs[12], bold = true, underline = true }, --	Character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
     -- ModeMsg		'showmode' message (e.g., "-- INSERT --").
     -- MsgArea		Area for messages and cmdline.
     -- MsgSeparator	Separator for scrolled messages |msgsep|.
     -- MoreMsg		|more-prompt|
-    ["NonText"]                = { link = "Whitespace" },       -- '@' at the end of the window, characters from 'showbreak' and other characters that do not really exist in the text (e.g., ">" displayed when a double-wide character doesn't fit at the end of the line). See also |hl-EndOfBuffer|.
+    ["NonText"]                = { link = "Whitespace" },             -- '@' at the end of the window, characters from 'showbreak' and other characters that do not really exist in the text (e.g., ">" displayed when a double-wide character doesn't fit at the end of the line). See also |hl-EndOfBuffer|.
     -- Syntax
-    ["Comment"]                = { fg = gs[7], italic = true }, --* any comment
-    ["Constant"]               = { fg = gs[12] },               -- * any constants
-    ["Character"]              = { link = "Type" },             -- a character constant: 'c', '\n'
-    ["String"]                 = { fg = cs[13] },               -- a string constant: "this is a string"
-    ["Number"]                 = { fg = cs[14] },               -- a number constant: 234, 0xff
-    ["Boolean"]                = { link = "Number" },           -- a boolean constant: TRUE, false
-    ["Float"]                  = { link = "Number" },           -- a floating point constant: 2.3e10
-    ["Identifier"]             = { fg = gs[11] },               -- * any variable name
-    ["Function"]               = { fg = gs[12] },               -- function name (also: methods for classes)
-    ["Statement"]              = { link = "Keyword" },          -- any statement
-    ["Conditional"]            = { link = "Keyword" },          -- if, then, else, endif, switch, etc.
-    ["Repeat"]                 = { link = "Keyword" },          -- for, do, while, etc.
-    ["Label"]                  = { link = "Keyword" },          --  case, default, etc.
-    ["Operator"]               = { fg = gs[10] },               -- "sizeof", "+", "*", etc.
-    ["Keyword"]                = { fg = gs[9] },                --  any other keyword
-    ["Exception"]              = { link = "Keyword" },          --  Exception	try, catch, throw
-    ["PreProc"]                = { link = "Keyword" },          -- * generic Preprocessor
-    ["Include"]                = { link = "Keyword" },          -- preprocessor #include
-    --  Define		preprocessor #define
-    --  Macro		same as Define
-    ["PreCondit"]              = { link = "Keyword" }, -- preprocessor #if, #else, #endif, etc.
-    ["Type"]                   = {},                   -- * int, long, char, etc.
-    ["StorageClass"]           = { link = "Keyword" }, -- static, register, volatile, etc.
-    --  Structure	struct, union, enum, etc.
-    --  Typedef	A typedef
-    ["Special"]                = { fg = cs[6] },                      -- * any special symbol
-    --  SpecialChar	special character in a constant
-    ["Tag"]                    = {},                                  -- you can use CTRL-] on this
+    ["Comment"]                = { fg = gs[7], italic = true },       --* any comment
+    ["Constant"]               = { fg = gs[12] },                     -- * any constants
+    ["Character"]              = { link = "Type" },                   -- a character constant: 'c', '\n'
+    ["String"]                 = { fg = t.string },                   -- a string constant: "this is a string"
+    ["Number"]                 = { fg = gs[12] },                     -- a number constant: 234, 0xff
+    ["Boolean"]                = { fg = gs[12] },                     -- a boolean constant: TRUE, false
+    ["Float"]                  = { link = "Number" },                 -- a floating point constant: 2.3e10
+    ["Identifier"]             = { fg = gs[12] },                     -- * any variable name
+    ["Function"]               = { fg = t.func },                     -- function name (also: methods for classes)
+    ["Statement"]              = { link = "Keyword" },                -- any statement
+    ["Conditional"]            = { link = "Keyword" },                -- if, then, else, endif, switch, etc.
+    ["Repeat"]                 = { link = "Keyword" },                -- for, do, while, etc.
+    ["Label"]                  = { link = "Keyword" },                --  case, default, etc.
+    ["Operator"]               = { fg = gs[10] },                     -- "sizeof", "+", "*", etc.
+    ["Keyword"]                = { fg = gs[12], bold = true },        --  any other keyword
+    ["Exception"]              = { link = "Keyword" },                --  Exception	try, catch, throw
+    ["PreProc"]                = { link = "Keyword" },                -- * generic Preprocessor
+    ["Include"]                = { link = "Keyword" },                -- preprocessor #include
+    ["Define"]                 = { link = "Keyword" },                -- TODO: preprocessor #define
+    ["Macro"]                  = { link = "Define" },                 -- TODO: same as Define
+    ["PreCondit"]              = { link = "Keyword" },                -- preprocessor #if, #else, #endif, etc.
+    ["Type"]                   = { fg = gs[12] },                     -- TODO: * int, long, char, etc.
+    ["StorageClass"]           = { link = "Keyword" },                -- static, register, volatile, etc.
+    ["Structure"]              = { fg = "red" },                      -- TODO: struct, union, enum, etc.
+    ["Typedef"]                = { fg = gs[12] },                     -- TODO: A typedef
+    ["Special"]                = { fg = t.func },                     -- * any special symbol
+    ["SpecialChar"]            = { fg = "red" },                      -- TODO: special character in a constant
+    ["Tag"]                    = {},                                  -- TODO: you can use CTRL-] on this
     ["Delimiter"]              = { fg = gs[10] },                     -- character that needs attention
-    --  SpecialComment	special things inside a comment
+    ["SpecialComment"]         = { fg = "red" },                      -- TODO: special things inside a comment
     ["Debug"]                  = {},                                  -- debugging statements
     ["Underline"]              = { italic = true, underline = true }, -- * text that stands out, HTML links
     ["Ignore"]                 = { fg = gs[7] },                      -- * left blank, hidden  |hl-Ignore|
-    ["Error"]                  = { fg = "red" },                      -- * any erroneous construct
+    ["Error"]                  = { fg = gs[10] },                     -- * any erroneous construct
     ["Todo"]                   = { fg = gs[12] },                     -- * anything that needs extra attention; mostly the keywords TODO FIXME and XXX
     -- Extra syntax
     ["luaFunc"]                = { link = "Function" },
     ["luaTable"]               = { link = "Delimiter" },
+    ["nixPath"]                = { link = "String" },
     -- Treesitter
     ["@comment.todo"]          = { link = "Todo" },
-    ["@comment.error"]         = { link = "Error" },
+    ["@comment.error"]         = { link = "ErrorMsg" },
     ["@comment.note"]          = { link = "Todo" },
     ["@constructor"]           = { link = "Identifier" },
     ["@string.special.path"]   = { link = "String" },
-    ["@punctuation.bracket"]   = { link = "Delimiter" },
+    ["@punctuation.bracket"]   = { fg = gs[9] },
     ["@punctuation.delimiter"] = { link = "Delimiter" },
     ["@variable.member"]       = { fg = gs[10] },
 
@@ -260,7 +235,6 @@ local groups = {
 for group, spec in pairs(groups) do
     vim.api.nvim_set_hl(0, group, spec)
 end
-
 
 
 return M
