@@ -50,7 +50,7 @@ M.night.shade = {
     hsl(0, 1, 52), -- 09 - | Brackets
     hsl(0, 1, 66), -- 10 - | Delimiters | Properties |
     hsl(0, 1, 78), -- 11 - | Low-constrast text | Operators
-    hsl(0, 1, 86), -- 12 - | High-constrast text | Keywords
+    hsl(0, 1, 89), -- 12 - | High-constrast text | Keywords
 }
 
 M.day.shade = {
@@ -80,7 +80,7 @@ tokens.day = {
 tokens.night = {
     type = hsl(267, 100, 81),  --
     string = hsl(220, 75, 84), --
-    func = hsl(293, 100, 85),  --
+    func = hsl(315, 45, 78),  --
     search = hsl(32, 66, 70),  --
 }
 
@@ -207,7 +207,7 @@ local groups = {
     ["Typedef"]                = { fg = gs[12] },                     -- TODO: A typedef
     ["Special"]                = { fg = t.func },                     -- * any special symbol
     ["SpecialChar"]            = { fg = "red" },                      -- TODO: special character in a constant
-    ["Tag"]                    = {},                                  -- TODO: you can use CTRL-] on this
+    ["Tag"]                    = { link = "Function" },               -- TODO: you can use CTRL-] on this
     ["Delimiter"]              = { fg = gs[10] },                     -- character that needs attention
     ["SpecialComment"]         = { fg = "red" },                      -- TODO: special things inside a comment
     ["Debug"]                  = {},                                  -- debugging statements
@@ -216,6 +216,11 @@ local groups = {
     ["Error"]                  = { fg = gs[10] },                     -- * any erroneous construct
     ["Todo"]                   = { fg = gs[12] },                     -- * anything that needs extra attention; mostly the keywords TODO FIXME and XXX
     -- Extra syntax
+    ["htmlArg"]                = { fg = gs[12] },
+    ["htmlEndTag"]             = { link = "htmlTag" },
+    ["htmlString"]             = { link = "String" },
+    ["htmlTag"]                = { fg = gs[9] },
+    ["htmlTagName"]            = { link = "Tag" },
     ["luaFunc"]                = { link = "Function" },
     ["luaTable"]               = { link = "Delimiter" },
     ["nixPath"]                = { link = "String" },
@@ -224,9 +229,11 @@ local groups = {
     ["@comment.error"]         = { link = "ErrorMsg" },
     ["@comment.note"]          = { link = "Todo" },
     ["@constructor"]           = { link = "Identifier" },
-    ["@string.special.path"]   = { link = "String" },
     ["@punctuation.bracket"]   = { fg = gs[9] },
     ["@punctuation.delimiter"] = { link = "Delimiter" },
+    ["@string.special.path"]   = { link = "String" },
+    ["@tag.attribute"]         = { link = "htmlArg" },
+    ["@tag.delimiter"]         = { link = "htmlTag" },
     ["@variable.member"]       = { fg = gs[10] },
 
 }
