@@ -71,17 +71,17 @@ M.day.shade = {
 local tokens = {}
 
 tokens.day = {
-    type = hsl(252, 42, 53), --
-    string = hsl(171, 100, 24),
+    type = hsl(274, 33, 74),   --
+    string = hsl(224, 66, 26), --
     func = hsl(208, 88, 43),
     search = hsl(39, 100, 42),
 }
 
 tokens.night = {
-    type = hsl(253, 59, 82),   --
-    string = hsl(220, 75, 84), --
-    func = hsl(287, 39, 70),   --
-    search = hsl(32, 66, 70),  --
+    type = hsl(208, 69, 86),   --
+    string = hsl(43, 100, 82), --
+    func = hsl(207, 69, 65),   --
+    search = hsl(0, 100, 84)   --
 }
 
 
@@ -98,8 +98,8 @@ end
 local gs = make_scale(M.night.shade)
 local t = tokens.night
 
-gs = make_scale(M.day.shade)
-t = tokens.day
+-- gs = make_scale(M.day.shade)
+-- t = tokens.day
 
 local groups = {
     ["Normal"]                 = { bg = gs[1], fg = gs[11] }, -- Normal text.
@@ -204,7 +204,7 @@ local groups = {
     ["Type"]                   = { fg = t.type },                     -- TODO: * int, long, char, etc.
     ["StorageClass"]           = { link = "Keyword" },                -- static, register, volatile, etc.
     ["Structure"]              = { fg = "red" },                      -- TODO: struct, union, enum, etc.
-    ["Typedef"]                = { fg = gs[12] },                     -- TODO: A typedef
+    ["Typedef"]                = { link = "Type" },                   -- TODO: A typedef
     ["Special"]                = { fg = t.func },                     -- * any special symbol
     ["SpecialChar"]            = { fg = "red" },                      -- TODO: special character in a constant
     ["Tag"]                    = { link = "Function" },               -- TODO: you can use CTRL-] on this
