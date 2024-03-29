@@ -71,7 +71,7 @@ M.day.shade = {
 local tokens = {}
 
 tokens.day = {
-    type = hsl(252, 42, 53),   --
+    type = hsl(252, 42, 53), --
     string = hsl(171, 100, 24),
     func = hsl(208, 88, 43),
     search = hsl(39, 100, 42),
@@ -98,8 +98,8 @@ end
 local gs = make_scale(M.night.shade)
 local t = tokens.night
 
--- gs = make_scale(M.day.shade)
--- t = tokens.day
+gs = make_scale(M.day.shade)
+t = tokens.day
 
 local groups = {
     ["Normal"]                 = { bg = gs[1], fg = gs[11] }, -- Normal text.
@@ -229,6 +229,7 @@ local groups = {
     ["@comment.error"]         = { link = "Todo" },
     ["@comment.note"]          = { link = "Todo" },
     ["@constructor"]           = { link = "Identifier" },
+    ["@keyword.function"]      = { fg = gs[12], bold = false },
     ["@punctuation.bracket"]   = { fg = gs[9] },
     ["@punctuation.delimiter"] = { link = "Delimiter" },
     ["@string.special.path"]   = { link = "String" },
