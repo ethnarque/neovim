@@ -201,7 +201,7 @@ local groups = {
     ["Define"]                 = { link = "Keyword" },                -- TODO: preprocessor #define
     ["Macro"]                  = { link = "Define" },                 -- TODO: same as Define
     ["PreCondit"]              = { link = "Keyword" },                -- preprocessor #if, #else, #endif, etc.
-    ["Type"]                   = { fg = gs[12] },                     -- TODO: * int, long, char, etc.
+    ["Type"]                   = { fg = t.type },                     -- TODO: * int, long, char, etc.
     ["StorageClass"]           = { link = "Keyword" },                -- static, register, volatile, etc.
     ["Structure"]              = { fg = "red" },                      -- TODO: struct, union, enum, etc.
     ["Typedef"]                = { fg = gs[12] },                     -- TODO: A typedef
@@ -226,7 +226,7 @@ local groups = {
     ["nixPath"]                = { link = "String" },
     -- Treesitter
     ["@comment.todo"]          = { link = "Todo" },
-    ["@comment.error"]         = { link = "ErrorMsg" },
+    ["@comment.error"]         = { link = "Todo" },
     ["@comment.note"]          = { link = "Todo" },
     ["@constructor"]           = { link = "Identifier" },
     ["@punctuation.bracket"]   = { fg = gs[9] },
