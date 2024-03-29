@@ -71,16 +71,16 @@ M.day.shade = {
 local tokens = {}
 
 tokens.day = {
-    type = "#d6409f",
-    string = hsl(172, 100, 26),
+    type = hsl(252, 42, 53),   --
+    string = hsl(171, 100, 24),
     func = hsl(208, 88, 43),
     search = hsl(39, 100, 42),
 }
 
 tokens.night = {
-    type = hsl(267, 100, 81),  --
+    type = hsl(253, 59, 82),   --
     string = hsl(220, 75, 84), --
-    func = hsl(315, 45, 78),  --
+    func = hsl(287, 39, 70),   --
     search = hsl(32, 66, 70),  --
 }
 
